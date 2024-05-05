@@ -92,6 +92,7 @@ void pipex_main(int f1, int f2, char **argv, char **envp)
 		dup2(f1, STDIN_FILENO);
 		close(pipefd[0]);
 		path_find_exec(argv[2], envp);
+		exit(0);
 	}
 	waitpid(pid, NULL, 0);
 	dup2(pipefd[0], STDIN_FILENO);
