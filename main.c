@@ -98,7 +98,6 @@ void pipex_main(int f1, int f2, char **argv, char **envp)
 	dup2(f2, STDOUT_FILENO);
 	close(pipefd[1]);
 	path_find_exec(argv[3], envp);
-	ft_putstr_fd("child process complete\n", 1);
 }
 
 int main(int argc, char **argv, char **envp)
