@@ -43,11 +43,13 @@ int exec_cmd(char *path, char *bin, char **envp)
 	if (!arg_arr)
 		return (0);
 	cmd = path_join(path, arg_arr[0]);
-	if (arg_arr && cmd)
+	if (!cmd)
 	{
-		if (execve(cmd, arg_arr, envp) != -1)
-			ret = 1;
+		free_array(arg_arr);
+		return (0);
 	}
+	if (execve(cmd, arg_arr, envp) != -1)
+		ret = 1;
 	free(arg_arr);
 	free(cmd);
 	return (ret);
@@ -67,10 +69,7 @@ int path_find_exec(char *cmd, char **envp)
 	while (path[i])
 	{
 		if (exec_cmd(path[i], cmd, envp) == 1)
-		{
-			perror("exec_cmd");
 			break;
-		}
 		i++;
 	}
 	free_array(path);
