@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/05 17:57:50 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/05 19:38:28 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/05 19:41:00 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void pipe_handle(int pipefd[2], int pid, char **argv)
 		dup2(pipefd[0], 0);
 		close(pipefd[0]);
 		close(pipefd[1]);
-		//printf("argv[1]: %s\n", argv[1]);
-		execve(argv[1], &argv[1], NULL);
+		if (execve(argv[1], &argv[1], NULL) == -1)
+			ft_putstr_fd("execve failed!\n", 1);
 
 	}
 	else //parent
