@@ -80,9 +80,10 @@ int path_find_exec(char *cmd, char **envp)
 void pipex_main(int f1, int f2, char **argv, char **envp)
 {
 	int pipefd[2];
-	int pid;
+	pid_t pid;
 
-	pipe(pipefd);
+	if (pipe(pipefd) == -1)
+		return (perror("pipe"));
 	pid = fork();
 	if (pid < 0)
 		return (perror("fork()"));
