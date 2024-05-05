@@ -10,112 +10,112 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./libft/libft.h"
-#include <stdio.h>
+#include "pipex.h"
 
-void args_print(int argc, char **argv);
+//argv[1] = infile
+//argv[2] = cmd1
+//argv[3] = cmd2
+//argv[4] = outfile
 
-char **get_path_env(char **envp)
+void	free_array(char **arr)
 {
-	int		i;
+	int	i;
 
 	i = 0;
-	while (envp[i])
+	if (!arr)
+		return ;
+	while (arr[i])
 	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return ft_split(envp[i] + 5, ':');
+		free(arr[i]);
 		i++;
 	}
-	return (NULL);
+	free(arr);
 }
 
-char *path_join(char *path, char *bin)
+int exec_cmd(char *path, char *bin, char **envp)
 {
-	char	*ret;
-	size_t	path_len;
-	size_t	bin_len;
-	if (!path || ! bin)
-		return (NULL);
-	path_len = ft_strlen(path);
-	bin_len = ft_strlen(path);
-	ret = malloc(path_len + bin_len + 2);
-	if (!ret)
-		return (NULL);
-	ft_strlcpy(ret, path, path_len + 1);
-	ft_strlcat(ret, "/", path_len + bin_len + 2);
-	ft_strlcat(ret, bin, path_len + bin_len + 2);
+	int		ret;
+	char	*cmd;
+	char	**arg_arr;
+
+	ret = 0;
+	arg_arr = ft_split(bin, ' ');
+	if (!arg_arr)
+		return (0);
+	cmd = path_join(path, arg_arr[0]);
+	if (arg_arr && cmd)
+	{
+		if (execve(cmd, arg_arr, envp) != -1)
+			ret = 1;
+	}
+	free(arg_arr);
+	free(cmd);
 	return (ret);
 }
 
-int exec_cmd(char **argv, char **envp)
+int path_find_exec(char *cmd, char **envp)
 {
-	char	**env_paths;
+	char	**path;
 	int		ret;
 	int		i;
 
 	ret = 0;
-	env_paths = get_path_env(envp);
-	if (!env_paths)
+	path = path_get(envp);
+	if (!path)
 		return (ret);
 	i = 0;
-	while (env_paths[i])
+	while (path[i])
 	{
-		char *cmd = path_join(env_paths[i], argv[1]);
-		if (!cmd)
-			break;
-		if (execve(cmd, &argv[1], envp) != -1)
+		if (exec_cmd(path[i], cmd, envp) == 1)
 		{
-			free(cmd);
-			ret = 1;
+			perror("exec_cmd");
 			break;
 		}
-		free(cmd);
 		i++;
 	}
+	free_array(path);
 	return (ret);
 }
 
-void pipe_handle(int pipefd[2], int pid, char **argv, char **envp)
+void pipex_main(int f1, int f2, char **argv, char **envp)
 {
-	char rb[2048] = { 0 };
+	int pipefd[2];
+	int pid;
 
-	if (pid == 0) //child
+	pipe(pipefd);
+	pid = fork();
+	if (pid < 0)
+		return (perror("fork()"));
+	if (pid == 0)
 	{
-		dup2(pipefd[0], 0);
+		dup2(pipefd[1], STDOUT_FILENO);
+		dup2(f1, STDIN_FILENO);
 		close(pipefd[0]);
-		//close(pipefd[1]);
-		exec_cmd(argv, envp);
+		path_find_exec(argv[2], envp);
 	}
-	else //parent
-	{
-		close(pipefd[1]);	
-		read(pipefd[0], rb, 2048);
-		ft_putstr_fd(rb, 1);
-		close(pipefd[0]);
-	}
-
+	waitpid(pid, NULL, 0);
+	dup2(pipefd[0], STDIN_FILENO);
+	dup2(f2, STDOUT_FILENO);
+	close(pipefd[1]);
+	path_find_exec(argv[3], envp);
+	ft_putstr_fd("child process complete\n", 1);
 }
 
 int main(int argc, char **argv, char **envp)
 {
-	int pipefd[2];
-	int	pid;
-
-	if (argc != 3)
+	int	f1;
+	int	f2;
+	if (argc != 5)
+	{
+		ft_putstr_fd("Invalid arguments\n", 1);
 		return (0);
-	if (pipe(pipefd) < 0)
-	{
-		ft_putstr_fd("pipe creation failed\n", 1);
-		return (-1);
 	}
-	pid = fork();
-	if (pid < 0)
-	{
-		ft_putstr_fd("fork() returned -1\n", 1);
-		return (-1);
-	}
-
-	pipe_handle(pipefd, pid, argv, envp);
-	//args_print(argc, argv);
+	f1 = open(argv[1], O_RDONLY, 0777);
+	f2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	if (f1 < 0 || f2 < 0)
+		return (0);
+	pipex_main(f1, f2, argv, envp);
+	close(f1);
+	close(f2);
 	return (0);
 }
