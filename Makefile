@@ -21,7 +21,7 @@ all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o $(NAME) $(CFLAGS) libft/libft.a $?
+	$(CC) -o $(NAME) $(CFLAGS) $? libft/libft.a
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $?

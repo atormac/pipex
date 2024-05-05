@@ -15,19 +15,76 @@
 
 void args_print(int argc, char **argv);
 
-char *cmd1[] = { "/bin/ls", "-l", 0 };
+char **get_path_env(char **envp)
+{
+	int		i;
 
-void pipe_handle(int pipefd[2], int pid, char **argv)
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+			return ft_split(envp[i] + 5, ':');
+		i++;
+	}
+	return (NULL);
+}
+
+char *path_join(char *path, char *bin)
+{
+	char	*ret;
+	size_t	path_len;
+	size_t	bin_len;
+	if (!path || ! bin)
+		return (NULL);
+	path_len = ft_strlen(path);
+	bin_len = ft_strlen(path);
+	ret = malloc(path_len + bin_len + 2);
+	if (!ret)
+		return (NULL);
+	ft_strlcpy(ret, path, path_len + 1);
+	ft_strlcat(ret, "/", path_len + bin_len + 2);
+	ft_strlcat(ret, bin, path_len + bin_len + 2);
+	return (ret);
+}
+
+int exec_cmd(char **argv, char **envp)
+{
+	char	**env_paths;
+	int		ret;
+	int		i;
+
+	ret = 0;
+	env_paths = get_path_env(envp);
+	if (!env_paths)
+		return (ret);
+	i = 0;
+	while (env_paths[i])
+	{
+		char *cmd = path_join(env_paths[i], argv[1]);
+		if (!cmd)
+			break;
+		if (execve(cmd, &argv[1], envp) != -1)
+		{
+			free(cmd);
+			ret = 1;
+			break;
+		}
+		free(cmd);
+		i++;
+	}
+	return (ret);
+}
+
+void pipe_handle(int pipefd[2], int pid, char **argv, char **envp)
 {
 	char rb[2048] = { 0 };
+
 	if (pid == 0) //child
 	{
 		dup2(pipefd[0], 0);
 		close(pipefd[0]);
-		close(pipefd[1]);
-		if (execve(argv[1], &argv[1], NULL) == -1)
-			ft_putstr_fd("execve failed!\n", 1);
-
+		//close(pipefd[1]);
+		exec_cmd(argv, envp);
 	}
 	else //parent
 	{
@@ -39,7 +96,7 @@ void pipe_handle(int pipefd[2], int pid, char **argv)
 
 }
 
-int main(int argc, char **argv)
+int main(int argc, char **argv, char **envp)
 {
 	int pipefd[2];
 	int	pid;
@@ -58,7 +115,7 @@ int main(int argc, char **argv)
 		return (-1);
 	}
 
-	pipe_handle(pipefd, pid, argv);
+	pipe_handle(pipefd, pid, argv, envp);
 	//args_print(argc, argv);
 	return (0);
 }
