@@ -30,8 +30,15 @@ void	free_array(char **arr)
 void	error_exit(char *str)
 {
 	if (str)
-		fprintf(stderr, "%s: %s\n", strerror(errno), str);
+	{
+		ft_putstr_fd(strerror(errno), 2);
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(str, 2);
+		ft_putstr_fd("\n", 2);
+	}
 	else
-		fprintf(stderr, "%s\n", strerror(errno));
+	{
+		perror(NULL);
+	}
 	exit(EXIT_FAILURE);
 }
