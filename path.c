@@ -39,8 +39,8 @@ int	exec_cmd(char *path, char *bin, char **envp)
 	cmd = path_join(path, arg_arr[0]);
 	if (!cmd)
 	{
-		error_exit(NULL);
 		free_array(arg_arr);
+		error_exit(NULL);
 	}
 	if (execve(cmd, arg_arr, envp) != -1)
 		ret = 1;
