@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 19:30:38 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 20:14:00 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int exec_cmd(char *path, char *bin, char **envp)
 	return (ret);
 }
 
-int path_find_exec(char *cmd, char **envp)
+int path_exec(char *cmd, char **envp)
 {
 	char	**path;
 	int		ret;

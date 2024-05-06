@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/06 17:48:33 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/06 20:18:28 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,12 +19,12 @@ LIBDIR = ./libft
 
 all: $(NAME)
 
+%.o: %.c
+	$(CC) -c $(CFLAGS) $?
+
 $(NAME): $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
 	$(CC) -o $(NAME) $(CFLAGS) $? ./libft/libft.a
-
-$(OBJECTS): %.o: %.c
-	$(CC) -c $(CFLAGS) $?
 
 clean:
 	$(MAKE) -C $(LIBDIR) $@
