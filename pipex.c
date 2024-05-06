@@ -18,6 +18,7 @@ void	pipex_child_one(int *pipefd, int f1, t_env_info *env)
 		error_exit(NULL);
 	close(pipefd[0]);
 	path_exec(env->argv[2], env);
+	free_array(env->path);
 	exit(EXIT_SUCCESS);
 }
 
@@ -27,6 +28,7 @@ void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 		return (error_exit(NULL));
 	close(pipefd[1]);
 	path_exec(env->argv[3], env);
+	free_array(env->path);
 	exit(EXIT_SUCCESS);
 }
 

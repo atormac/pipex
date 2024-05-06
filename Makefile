@@ -12,7 +12,7 @@
 
 NAME = pipex
 CC = cc
-CFLAGS = -Wall -Wextra -Werror 
+CFLAGS = -Wall -Wextra -Werror -g
 SOURCES = pipex.c path.c utils.c
 OBJECTS = $(SOURCES:.c=.o)
 LIBDIR = ./libft

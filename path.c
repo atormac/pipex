@@ -44,7 +44,7 @@ int	exec_cmd(char *path, char *bin, char **envp)
 	}
 	if (execve(cmd, arg_arr, envp) != -1)
 		ret = 1;
-	free(arg_arr);
+	free_array(arg_arr);
 	free(cmd);
 	return (ret);
 }
