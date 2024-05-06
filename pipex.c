@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 19:22:51 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:35:13 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int main(int argc, char **argv, char **envp)
 	f1 = open(argv[1], O_RDONLY, 0777);
 	if (f1 == -1)
 		error_exit(argv[1]);
-	f2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
+	f2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (f2 == -1)
 		error_exit(argv[4]);
 	pipex_main(f1, f2, argv, envp);
