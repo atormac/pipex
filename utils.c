@@ -1,25 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   args.c                                             :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/05 18:36:52 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/05 18:40:45 by atorma           ###   ########.fr       */
+/*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
+/*   Updated: 2024/05/06 14:21:41 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void args_print(int argc, char **argv)
+void	free_array(char **arr)
 {
 	int	i;
 
 	i = 0;
-	while (i < argc)
+	if (!arr)
+		return ;
+	while (arr[i])
 	{
-		printf("argv[%d]: %s\n", i, argv[i]);
+		free(arr[i]);
 		i++;
 	}
+	free(arr);
 }

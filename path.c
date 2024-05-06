@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   path.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
+/*   Updated: 2024/05/06 14:26:37 by atorma           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "pipex.h"
 
 char **path_get(char **envp)
@@ -12,6 +24,50 @@ char **path_get(char **envp)
 		i++;
 	}
 	return (NULL);
+}
+
+int exec_cmd(char *path, char *bin, char **envp)
+{
+	int		ret;
+	char	*cmd;
+	char	**arg_arr;
+
+	ret = 0;
+	arg_arr = ft_split(bin, ' ');
+	if (!arg_arr)
+		return (0);
+	cmd = path_join(path, arg_arr[0]);
+	if (!cmd)
+	{
+		free_array(arg_arr);
+		return (0);
+	}
+	if (execve(cmd, arg_arr, envp) != -1)
+		ret = 1;
+	free(arg_arr);
+	free(cmd);
+	return (ret);
+}
+
+int path_find_exec(char *cmd, char **envp)
+{
+	char	**path;
+	int		ret;
+	int		i;
+
+	ret = 0;
+	path = path_get(envp);
+	if (!path)
+		return (ret);
+	i = 0;
+	while (path[i])
+	{
+		if (exec_cmd(path[i], cmd, envp) == 1)
+			break;
+		i++;
+	}
+	free_array(path);
+	return (ret);
 }
 
 char *path_join(char *path, char *bin)

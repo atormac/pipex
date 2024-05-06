@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/05 18:37:19 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/05 18:37:54 by atorma           ###   ########.fr       */
+/*   Created: 2024/05/06 14:24:37 by atorma            #+#    #+#             */
+/*   Updated: 2024/05/06 14:25:48 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,6 @@
 #include <stdio.h>
 char **path_get(char **envp);
 char *path_join(char *path, char *bin);
+int path_find_exec(char *cmd, char **envp);
+void	free_array(char **arr);
 #endif

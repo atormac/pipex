@@ -6,14 +6,14 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/05 18:38:33 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/06 14:24:15 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 CC = cc
 CFLAGS = -Wall -Wextra -Werror 
-SOURCES = main.c path.c
+SOURCES = pipex.c path.c utils.c
 OBJECTS = $(SOURCES:.c=.o)
 LIBDIR= ./libft
 
