@@ -107,7 +107,7 @@ int main(int argc, char **argv, char **envp)
 	int	f2;
 	if (argc != 5)
 	{
-		ft_putstr_fd("Invalid arguments\n", 1);
+		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", 1);
 		return (0);
 	}
 	f1 = open(argv[1], O_RDONLY, 0777);
