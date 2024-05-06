@@ -57,16 +57,6 @@ int	pipex_main(int f1, int f2, t_env_info *env)
 	return (1);
 }
 
-int	env_init(t_env_info *env, char **argv, char **envp)
-{
-	env->argv = argv;
-	env->envp = envp;
-	env->path = path_get(envp);
-	if (env->path == NULL)
-		return (0);
-	return (1);
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_env_info	env;

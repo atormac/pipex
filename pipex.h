@@ -31,6 +31,7 @@ char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_env_info *env);
 void	free_array(char **arr);
+int		env_init(t_env_info *env, char **argv, char **envp);
 void	error_exit(char *str);
 
 #endif
