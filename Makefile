@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/06 14:54:41 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/06 15:02:16 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ $(NAME): $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
 	$(CC) -o $(NAME) $(CFLAGS) $? libft/libft.a
 
-%.o: %.c
+$(OBJECTS): %.o: %.c
 	$(CC) -c $(CFLAGS) $?
 
 clean:
