@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 19:16:06 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:22:51 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,7 @@ void pipex_child(int *pipefd, int f1, char **argv, char **envp)
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1 || dup2(f1, STDIN_FILENO) == -1)
 		error_exit(NULL);
 	close(pipefd[0]);
-	if (!path_find_exec(argv[2], envp))
-		error_exit(argv[2]);
+	path_find_exec(argv[2], envp);
 	exit(EXIT_SUCCESS);
 }
 
@@ -42,8 +41,7 @@ int	pipex_main(int f1, int f2, char **argv, char **envp)
 	if (dup2(pipefd[0], STDIN_FILENO) == -1 || dup2(f2, STDOUT_FILENO) == -1)
 		return (0);
 	close(pipefd[1]);
-	if (!path_find_exec(argv[3], envp))
-		return (0);
+	path_find_exec(argv[3], envp);
 	waitpid(pid, NULL, 0);
 	return (1);
 }
