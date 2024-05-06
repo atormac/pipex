@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 17:16:33 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:16:06 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void pipex_child(int *pipefd, int f1, char **argv, char **envp)
 		error_exit(NULL);
 	close(pipefd[0]);
 	if (!path_find_exec(argv[2], envp))
-		error_exit(NULL);
+		error_exit(argv[2]);
 	exit(EXIT_SUCCESS);
 }
 
@@ -39,12 +39,12 @@ int	pipex_main(int f1, int f2, char **argv, char **envp)
 		return (0);
 	if (pid == 0)
 		pipex_child(pipefd, f1, argv, envp);
-	waitpid(pid, NULL, 0);
 	if (dup2(pipefd[0], STDIN_FILENO) == -1 || dup2(f2, STDOUT_FILENO) == -1)
 		return (0);
 	close(pipefd[1]);
 	if (!path_find_exec(argv[3], envp))
-		error_exit(NULL);
+		return (0);
+	waitpid(pid, NULL, 0);
 	return (1);
 }
 
@@ -58,13 +58,12 @@ int main(int argc, char **argv, char **envp)
 		return (EXIT_FAILURE);
 	}
 	f1 = open(argv[1], O_RDONLY, 0777);
-	if (f1 < 0)
+	if (f1 == -1)
 		error_exit(argv[1]);
 	f2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0777);
-	if (f2 < 0)
+	if (f2 == -1)
 		error_exit(argv[4]);
-	if (!pipex_main(f1, f2, argv, envp))
-		error_exit(NULL);
+	pipex_main(f1, f2, argv, envp);
 	close(f1);
 	close(f2);
 	return (EXIT_SUCCESS);

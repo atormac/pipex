@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 17:15:54 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 19:05:57 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ int exec_cmd(char *path, char *bin, char **envp)
 	cmd = path_join(path, arg_arr[0]);
 	if (!cmd)
 	{
-		free_array(arg_arr);
 		error_exit(NULL);
+		free_array(arg_arr);
 	}
 	if (execve(cmd, arg_arr, envp) != -1)
 		ret = 1;
