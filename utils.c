@@ -27,7 +27,7 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-void error_exit(char *str)
+void	error_exit(char *str)
 {
 	if (str)
 		fprintf(stderr, "%s: %s\n", strerror(errno), str);

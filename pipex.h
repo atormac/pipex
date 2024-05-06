@@ -10,22 +10,22 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PIPEX_H
-#define FT_PIPEX_H
-#include "./libft/libft.h"
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include <string.h>
-#include <errno.h>
+#ifndef PIPEX_H
+# define PIPEX_H
+# include "./libft/libft.h"
+# include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
+# include <stdio.h>
+# include <string.h>
+# include <errno.h>
 
-typedef struct	t_env_info
+typedef struct t_env_info
 {
 	char	**argv;
 	char	**envp;
 	char	**path;
-}	t_env_info; 
+}	t_env_info;
 
 char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);

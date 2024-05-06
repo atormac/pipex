@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-char **path_get(char **envp)
+char	**path_get(char **envp)
 {
 	int		i;
 
@@ -20,13 +20,13 @@ char **path_get(char **envp)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-			return ft_split(envp[i] + 5, ':');
+			return (ft_split(envp[i] + 5, ':'));
 		i++;
 	}
 	return (NULL);
 }
 
-int exec_cmd(char *path, char *bin, char **envp)
+int	exec_cmd(char *path, char *bin, char **envp)
 {
 	int		ret;
 	char	*cmd;
@@ -49,7 +49,7 @@ int exec_cmd(char *path, char *bin, char **envp)
 	return (ret);
 }
 
-int path_exec(char *cmd, t_env_info *env)
+int	path_exec(char *cmd, t_env_info *env)
 {
 	int		ret;
 	int		i;
@@ -61,14 +61,14 @@ int path_exec(char *cmd, t_env_info *env)
 		if (exec_cmd(env->path[i], cmd, env->envp) == 1)
 		{
 			ret = 1;
-			break;
+			break ;
 		}
 		i++;
 	}
 	return (ret);
 }
 
-char *path_join(char *path, char *bin)
+char	*path_join(char *path, char *bin)
 {
 	char	*ret;
 	size_t	path_len;

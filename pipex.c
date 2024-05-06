@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-void pipex_child_one(int *pipefd, int f1, t_env_info *env)
+void	pipex_child_one(int *pipefd, int f1, t_env_info *env)
 {
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1 || dup2(f1, STDIN_FILENO) == -1)
 		error_exit(NULL);
@@ -21,7 +21,7 @@ void pipex_child_one(int *pipefd, int f1, t_env_info *env)
 	exit(EXIT_SUCCESS);
 }
 
-void pipex_child_two(int *pipefd, int f2, t_env_info *env)
+void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 {
 	if (dup2(pipefd[0], STDIN_FILENO) == -1 || dup2(f2, STDOUT_FILENO) == -1)
 		return (error_exit(NULL));
@@ -65,11 +65,11 @@ int	env_init(t_env_info *env, char **argv, char **envp)
 	return (1);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
-	t_env_info env;
-	int	f1;
-	int	f2;
+	t_env_info	env;
+	int			f1;
+	int			f2;
 
 	if (argc != 5)
 	{
