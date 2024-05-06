@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 14:21:41 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 16:49:36 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,4 +25,13 @@ void	free_array(char **arr)
 		i++;
 	}
 	free(arr);
+}
+
+void error_exit(char *str)
+{
+	if (str)
+		fprintf(stderr, "%s: %s\n", strerror(errno), str);
+	else
+		fprintf(stderr, "%s\n", strerror(errno));
+	exit(EXIT_FAILURE);
 }
