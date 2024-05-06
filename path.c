@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 14:26:37 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 14:33:49 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ char *path_join(char *path, char *bin)
 	char	*ret;
 	size_t	path_len;
 	size_t	bin_len;
+
 	if (!path || ! bin)
 		return (NULL);
 	path_len = ft_strlen(path);
