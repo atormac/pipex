@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 20:14:00 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/06 20:41:35 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,22 @@ int exec_cmd(char *path, char *bin, char **envp)
 	return (ret);
 }
 
-int path_exec(char *cmd, char **envp)
+int path_exec(char *cmd, t_env_info *env)
 {
-	char	**path;
 	int		ret;
 	int		i;
 
 	ret = 0;
-	path = path_get(envp);
-	if (!path)
-		return (ret);
 	i = 0;
-	while (path[i])
+	while (env->path[i])
 	{
-		if (exec_cmd(path[i], cmd, envp) == 1)
+		if (exec_cmd(env->path[i], cmd, env->envp) == 1)
 		{
 			ret = 1;
 			break;
 		}
 		i++;
 	}
-	free_array(path);
 	return (ret);
 }
 

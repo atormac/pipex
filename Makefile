@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/06 20:18:28 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/06 21:03:30 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,14 +17,14 @@ SOURCES = pipex.c path.c utils.c
 OBJECTS = $(SOURCES:.c=.o)
 LIBDIR = ./libft
 
-all: $(NAME)
-
 %.o: %.c
 	$(CC) -c $(CFLAGS) $?
 
+all: $(NAME)
+
 $(NAME): $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o $(NAME) $(CFLAGS) $? ./libft/libft.a
+	$(CC) -o $(NAME) $(CFLAGS) $^ ./libft/libft.a
 
 clean:
 	$(MAKE) -C $(LIBDIR) $@
