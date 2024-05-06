@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/06 15:02:16 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/06 15:05:40 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,13 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror 
 SOURCES = pipex.c path.c utils.c
 OBJECTS = $(SOURCES:.c=.o)
-LIBDIR= ./libft
+LIBDIR = ./libft
 
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o $(NAME) $(CFLAGS) $? libft/libft.a
+	$(CC) -o $(NAME) $(CFLAGS) $? ./libft/libft.a
 
 $(OBJECTS): %.o: %.c
 	$(CC) -c $(CFLAGS) $?
