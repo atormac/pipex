@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 20:41:35 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/07 19:50:01 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,14 @@ int	exec_cmd(char *path, char *bin, char **envp)
 		free_array(arg_arr);
 		error_exit(NULL);
 	}
+	//ft_putstr_fd("trying: ", 2);
+	//ft_putstr_fd(cmd, 2);
+	//ft_putstr_fd("\n", 2);
 	if (execve(cmd, arg_arr, envp) != -1)
+	{
+		perror(cmd);
 		ret = 1;
+	}
 	free_array(arg_arr);
 	free(cmd);
 	return (ret);
@@ -77,12 +83,12 @@ char	*path_join(char *path, char *bin)
 	if (!path || ! bin)
 		return (NULL);
 	path_len = ft_strlen(path);
-	bin_len = ft_strlen(path);
+	bin_len = ft_strlen(bin);
 	ret = malloc(path_len + bin_len + 2);
 	if (!ret)
 		return (NULL);
 	ft_strlcpy(ret, path, path_len + 1);
-	ft_strlcat(ret, "/", path_len + bin_len + 2);
-	ft_strlcat(ret, bin, path_len + bin_len + 2);
+	ft_strlcpy(ret + path_len, "/", 2);
+	ft_strlcpy(ret + path_len + 1, bin, bin_len + 1);
 	return (ret);
 }
