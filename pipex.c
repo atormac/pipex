@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/16 16:01:05 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/16 18:50:44 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	pipex_child_one(int *pipefd, int f1, t_env_info *env)
 		error_exit(NULL);
 	}
 	close(pipefd[0]);
+	close(pipefd[1]);
 	if (!path_exec(env->argv[2], env))
 	{
 		error_cmd(env->argv[2]);
@@ -43,6 +44,7 @@ void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 		return (error_exit(NULL));
 	}
 	close(pipefd[1]);
+	close(pipefd[0]);
 	if (!path_exec(env->argv[3], env))
 	{
 		error_cmd(env->argv[3]);
@@ -53,9 +55,18 @@ void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 	exit(exit_code);
 }
 
-int	pipex_main(int f1, int f2, t_env_info *env)
+int	pipex_wait(pid_t pid)
 {
 	int		status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
+		return (0);
+	return (1);
+}
+
+int	pipex_main(int f1, int f2, t_env_info *env)
+{
 	int		pipefd[2];
 	pid_t	pid;
 	pid_t	pid2;
@@ -67,20 +78,17 @@ int	pipex_main(int f1, int f2, t_env_info *env)
 		return (0);
 	if (pid == 0)
 		pipex_child_one(pipefd, f1, env);
-	close(pipefd[1]);
-	waitpid(pid, &status, 0);
-	if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
-	{
-		close(pipefd[0]);
-		return (0);
-	}
 	pid2 = fork();
 	if (pid2 == -1)
 		return (0);
 	if (pid2 == 0)
 		pipex_child_two(pipefd, f2, env);
+	close(pipefd[1]);
 	close(pipefd[0]);
-	waitpid(pid2, NULL, 0);
+	if (!pipex_wait(pid))
+		return (0);
+	if (!pipex_wait(pid2))
+		return (0);
 	return (1);
 }
 

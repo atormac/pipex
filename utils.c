@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/16 15:55:32 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/16 18:12:07 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	error_cmd(char *cmd)
 
 void	error_exit(char *str)
 {
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putstr_fd("error_exit: ", STDERR_FILENO);
 	if (str)
 	{
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);
