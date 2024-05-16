@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/16 18:12:07 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/16 20:47:13 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ void	free_array(char **arr)
 
 int	env_init(t_env_info *env, char **argv, char **envp)
 {
+	if (!envp || *envp == NULL)
+		return (0);
 	env->argv = argv;
 	env->envp = envp;
 	env->path = path_get(envp);
@@ -45,9 +47,18 @@ void	error_cmd(char *cmd)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
+void	error_file(char *cmd)
+{
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putstr_fd("no such file or directory: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	exit(EXIT_FAILURE);
+}
+
 void	error_exit(char *str)
 {
-	ft_putstr_fd("error_exit: ", STDERR_FILENO);
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
 	if (str)
 	{
 		ft_putstr_fd(strerror(errno), STDERR_FILENO);

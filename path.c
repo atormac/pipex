@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/07 20:32:33 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/16 20:43:55 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,10 @@ int	exec_cmd(char *path, char *bin, char **envp)
 		free_array(arg_arr);
 		error_exit(NULL);
 	}
-	if (execve(cmd, arg_arr, envp) != -1)
+	if (access(cmd, F_OK) == 0)
 	{
-		perror(cmd);
-		ret = 1;
+		if (execve(cmd, arg_arr, envp) != -1)
+			ret = 1;
 	}
 	free_array(arg_arr);
 	free(cmd);

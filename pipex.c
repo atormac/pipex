@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/16 18:50:44 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/16 20:50:22 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void	pipex_child_one(int *pipefd, int f1, t_env_info *env)
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1 || dup2(f1, STDIN_FILENO) == -1)
 	{
 		free_array(env->path);
-		error_exit(NULL);
+		exit(EXIT_FAILURE);
 	}
-	close(pipefd[0]);
 	close(pipefd[1]);
+	close(pipefd[0]);
 	if (!path_exec(env->argv[2], env))
 	{
 		error_cmd(env->argv[2]);
@@ -41,7 +41,7 @@ void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 	if (dup2(pipefd[0], STDIN_FILENO) == -1 || dup2(f2, STDOUT_FILENO) == -1)
 	{
 		free_array(env->path);
-		return (error_exit(NULL));
+		exit(EXIT_FAILURE);
 	}
 	close(pipefd[1]);
 	close(pipefd[0]);
@@ -49,7 +49,6 @@ void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 	{
 		error_cmd(env->argv[3]);
 		exit_code = EXIT_FAILURE;
-		close(pipefd[1]);
 	}
 	free_array(env->path);
 	exit(exit_code);
@@ -105,10 +104,10 @@ int	main(int argc, char **argv, char **envp)
 	}
 	f1 = open(argv[1], O_RDONLY, 0777);
 	if (f1 == -1)
-		error_exit(argv[1]);
+		error_file(argv[1]);
 	f2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (f2 == -1)
-		error_exit(argv[4]);
+		error_file(argv[4]);
 	if (env_init(&env, argv, envp))
 		pipex_main(f1, f2, &env);
 	free_array(env.path);
