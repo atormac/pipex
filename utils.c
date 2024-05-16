@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/06 18:09:23 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/16 15:55:32 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,23 @@ int	env_init(t_env_info *env, char **argv, char **envp)
 	return (1);
 }
 
+void	error_cmd(char *cmd)
+{
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	ft_putstr_fd("command not found: ", STDERR_FILENO);
+	ft_putstr_fd(cmd, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
 void	error_exit(char *str)
 {
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
 	if (str)
 	{
-		ft_putstr_fd(strerror(errno), 2);
-		ft_putstr_fd(": ", 2);
-		ft_putstr_fd(str, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd(strerror(errno), STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putstr_fd("\n", STDERR_FILENO);
 	}
 	else
 	{
