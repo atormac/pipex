@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/16 20:47:13 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/18 17:46:59 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,21 @@ void	free_array(char **arr)
 
 int	env_init(t_env_info *env, char **argv, char **envp)
 {
-	if (!envp || *envp == NULL)
-		return (0);
 	env->argv = argv;
 	env->envp = envp;
 	env->path = path_get(envp);
 	if (env->path == NULL)
 		return (0);
 	return (1);
+}
+
+void	exit_child(int code, int *pipefd, int fd, t_env_info* env)
+{
+	close(pipefd[0]);
+	close(pipefd[1]);
+	close(fd);
+	free_array(env->path);
+	exit(code);
 }
 
 void	error_cmd(char *cmd)
@@ -53,7 +60,6 @@ void	error_file(char *cmd)
 	ft_putstr_fd("no such file or directory: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
-	exit(EXIT_FAILURE);
 }
 
 void	error_exit(char *str)

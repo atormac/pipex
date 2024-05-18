@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/16 20:50:22 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/18 17:52:41 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	pipex_child_one(int *pipefd, int f1, t_env_info *env)
 
 	exit_code = EXIT_SUCCESS;
 	if (dup2(pipefd[1], STDOUT_FILENO) == -1 || dup2(f1, STDIN_FILENO) == -1)
-	{
-		free_array(env->path);
-		exit(EXIT_FAILURE);
-	}
+		exit_child(EXIT_FAILURE, pipefd, f1, env);
 	close(pipefd[1]);
 	close(pipefd[0]);
 	if (!path_exec(env->argv[2], env))
@@ -29,20 +26,23 @@ void	pipex_child_one(int *pipefd, int f1, t_env_info *env)
 		error_cmd(env->argv[2]);
 		exit_code = EXIT_FAILURE;
 	}
-	free_array(env->path);
-	exit(exit_code);
+	exit_child(exit_code, pipefd, f1, env);
 }
 
-void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
+void	pipex_child_two(int *pipefd, t_env_info *env)
 {
 	int	exit_code;
+	int	out_fd;
 
 	exit_code = EXIT_SUCCESS;
-	if (dup2(pipefd[0], STDIN_FILENO) == -1 || dup2(f2, STDOUT_FILENO) == -1)
+	out_fd = open(env->argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (out_fd == -1)
 	{
-		free_array(env->path);
-		exit(EXIT_FAILURE);
+		error_file(env->argv[4]);
+		exit_child(EXIT_FAILURE, pipefd, out_fd, env);
 	}
+	if (dup2(pipefd[0], STDIN_FILENO) == -1 || dup2(out_fd, STDOUT_FILENO) == -1)
+		exit_child(EXIT_FAILURE, pipefd, out_fd, env);
 	close(pipefd[1]);
 	close(pipefd[0]);
 	if (!path_exec(env->argv[3], env))
@@ -50,8 +50,7 @@ void	pipex_child_two(int *pipefd, int f2, t_env_info *env)
 		error_cmd(env->argv[3]);
 		exit_code = EXIT_FAILURE;
 	}
-	free_array(env->path);
-	exit(exit_code);
+	exit_child(exit_code, pipefd, out_fd, env);
 }
 
 int	pipex_wait(pid_t pid)
@@ -64,7 +63,7 @@ int	pipex_wait(pid_t pid)
 	return (1);
 }
 
-int	pipex_main(int f1, int f2, t_env_info *env)
+int	pipex_main(int f1, t_env_info *env)
 {
 	int		pipefd[2];
 	pid_t	pid;
@@ -81,13 +80,11 @@ int	pipex_main(int f1, int f2, t_env_info *env)
 	if (pid2 == -1)
 		return (0);
 	if (pid2 == 0)
-		pipex_child_two(pipefd, f2, env);
+		pipex_child_two(pipefd, env);
 	close(pipefd[1]);
 	close(pipefd[0]);
-	if (!pipex_wait(pid))
-		return (0);
-	if (!pipex_wait(pid2))
-		return (0);
+	pipex_wait(pid);
+	pipex_wait(pid2);
 	return (1);
 }
 
@@ -95,7 +92,6 @@ int	main(int argc, char **argv, char **envp)
 {
 	t_env_info	env;
 	int			f1;
-	int			f2;
 
 	if (argc != 5)
 	{
@@ -104,14 +100,13 @@ int	main(int argc, char **argv, char **envp)
 	}
 	f1 = open(argv[1], O_RDONLY, 0777);
 	if (f1 == -1)
+	{
 		error_file(argv[1]);
-	f2 = open(argv[4], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (f2 == -1)
-		error_file(argv[4]);
-	if (env_init(&env, argv, envp))
-		pipex_main(f1, f2, &env);
+		exit(EXIT_FAILURE);
+	}
+	env_init(&env, argv, envp);
+	pipex_main(f1, &env);
 	free_array(env.path);
 	close(f1);
-	close(f2);
 	return (EXIT_SUCCESS);
 }
