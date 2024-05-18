@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:37:21 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/18 18:37:49 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/18 20:00:36 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	exit_child(int code, int *pipefd, int fd, t_env_info* env)
 void	error_cmd(char *cmd)
 {
 	char	*sp;
-
 
 	sp  = ft_strchr(cmd, ' ');
 	if (sp)
