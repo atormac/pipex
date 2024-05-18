@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/18 17:52:41 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/18 18:32:10 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	pipex_child_two(int *pipefd, t_env_info *env)
 	if (!path_exec(env->argv[3], env))
 	{
 		error_cmd(env->argv[3]);
-		exit_code = EXIT_FAILURE;
+		exit_code = 127;
 	}
 	exit_child(exit_code, pipefd, out_fd, env);
 }
@@ -58,8 +58,8 @@ int	pipex_wait(pid_t pid)
 	int		status;
 
 	waitpid(pid, &status, 0);
-	if (WIFEXITED(status) && WEXITSTATUS(status) == EXIT_FAILURE)
-		return (0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
 	return (1);
 }
 
@@ -84,29 +84,26 @@ int	pipex_main(int f1, t_env_info *env)
 	close(pipefd[1]);
 	close(pipefd[0]);
 	pipex_wait(pid);
-	pipex_wait(pid2);
-	return (1);
+	return pipex_wait(pid2);
 }
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_env_info	env;
 	int			f1;
+	int			code;
 
 	if (argc != 5)
 	{
 		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", 1);
 		return (EXIT_SUCCESS);
 	}
-	f1 = open(argv[1], O_RDONLY, 0777);
+	f1 = open(argv[1], O_RDONLY, 0644);
 	if (f1 == -1)
-	{
 		error_file(argv[1]);
-		exit(EXIT_FAILURE);
-	}
 	env_init(&env, argv, envp);
-	pipex_main(f1, &env);
+	code = pipex_main(f1, &env);
 	free_array(env.path);
 	close(f1);
-	return (EXIT_SUCCESS);
+	return (code);
 }
