@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/18 17:46:59 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/18 17:58:30 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,12 @@ void	exit_child(int code, int *pipefd, int fd, t_env_info* env)
 
 void	error_cmd(char *cmd)
 {
+	char	*sp;
+
+
+	sp  = ft_strchr(cmd, ' ');
+	if (sp)
+		cmd[sp - cmd] = '\0';
 	ft_putstr_fd("pipex: ", STDERR_FILENO);
 	ft_putstr_fd("command not found: ", STDERR_FILENO);
 	ft_putstr_fd(cmd, STDERR_FILENO);
