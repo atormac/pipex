@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/18 18:32:10 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/18 18:36:21 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	pipex_wait(pid_t pid)
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
-	return (1);
+	return (EXIT_FAILURE);
 }
 
 int	pipex_main(int f1, t_env_info *env)
