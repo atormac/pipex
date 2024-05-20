@@ -1,7 +1,7 @@
 #include "pipex.h"
 
 
-int *pid_init(int argc)
+int	*pid_init(int argc)
 {
 	int	cmd_count;
 
@@ -19,15 +19,16 @@ int	pid_wait(pid_t pid)
 	return (EXIT_FAILURE);
 }
 
-int *pipes_init(int argc)
+int	*pipes_init(int argc)
 {
-	int i = 0;
-	int cmd_count = argc - 3;
-	int	*pipes = malloc((cmd_count - 1) * (2 * sizeof(int)));
+	int	i;
+	int	cmd_count;
+	int	*pipes;
 	
-	if (!pipes)
-		return (NULL);
-	while (i < (cmd_count - 1))
+	i = 0;
+	cmd_count - argc - 3;
+	pipes = malloc((cmd_count - 1) * (2 * sizeof(int)));
+	while (pipes && i < (cmd_count - 1))
 	{
 		if (pipe(pipes + (i * 2)) < 0)
 		{
@@ -46,12 +47,14 @@ int *pipes_init(int argc)
 	return (pipes);
 }
 
-void pipes_close(t_pipex_s *px, int *pipes)
+void	pipes_close(t_pipex_s *px, int *pipes)
 {
-	int cmd_count = px->argc - 3;
-	int i = 0;
+	int cmd_count;
+	int i;
 	int	*pipefd;
 
+	i = 0;
+	cmd_count = px->argc - 3;
 	if (!pipes)
 		return;
 	while (i < (cmd_count - 1))

@@ -72,7 +72,6 @@ void	pipex_child(t_pipex_s *px, int i)
 	exit_silent(px, EXIT_SUCCESS);
 }
 
-
 int pipex_main(t_pipex_s *px)
 {
 	int		exit_code;
