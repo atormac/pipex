@@ -68,8 +68,7 @@ void	pipex_child(t_pipex_s *px, int i)
 	else
 		pipex_dup(px, px->pipes[i * 2 + 1], px->pipes[(i - 1) * 2]);
 	pipes_close(px, px->pipes);
-	if (!path_exec(px->argv[i + 2], px))
-		exit_error(px, PX_ERR_CMD, px->argv[i + 2], 127);
+	path_exec(px->argv[i + 2], px);
 	exit_silent(px, EXIT_SUCCESS);
 }
 
