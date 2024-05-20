@@ -44,6 +44,8 @@ typedef struct t_pipex_s
 	int		*pids;
 }	t_pipex_s;
 
+void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp);
+int		pipex_main(t_pipex_s *px);
 void	pipex_free_close(t_pipex_s *px);
 int		*pid_init(int argc);
 int		pid_wait(pid_t pid);

@@ -32,13 +32,13 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 
 void pipex_free_close(t_pipex_s *px)
 {
-	pipes_close(px, px->pipes);
-	free(px->pids);
-	free_array(px->path);
 	if (px->file1 >= 0)
 		close(px->file1);
 	if (px->file2 >= 0)
 		close(px->file2);
+	pipes_close(px, px->pipes);
+	free(px->pids);
+	free_array(px->path);
 }
 
 void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
@@ -95,21 +95,4 @@ int pipex_main(t_pipex_s *px)
 	while (i < px->argc - 3)
 		exit_code = pid_wait(px->pids[i++]);
 	return (exit_code);
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_pipex_s	px;
-	int			code;
-
-	if (argc != 5)
-	{
-		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", 1);
-		return (EXIT_SUCCESS);
-	}
-	code = EXIT_FAILURE;
-	pipex_init(&px, argc, argv, envp);
-	code = pipex_main(&px);
-	pipex_free_close(&px);
-	return (code);
 }
