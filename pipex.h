@@ -22,16 +22,20 @@
 
 typedef struct t_env_info
 {
+	int		argc;
 	char	**argv;
 	char	**envp;
 	char	**path;
 }	t_env_info;
 
+int		*pid_init(t_env_info *env);
+int		*pipes_init(t_env_info *env);
+void	pipes_close(t_env_info *env, int *pipes);
 char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_env_info *env);
 void	free_array(char **arr);
-int		env_init(t_env_info *env, char **argv, char **envp);
+int		env_init(t_env_info *env, int argc, char **argv, char **envp);
 void	exit_child(int code, int *pipefd, int fd, t_env_info* env);
 void	error_cmd(char *cmd);
 void	error_file(char *cmd);
