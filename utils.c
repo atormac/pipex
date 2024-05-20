@@ -26,14 +26,3 @@ void	free_array(char **arr)
 	}
 	free(arr);
 }
-
-int	env_init(t_env_info *env, int argc, char **argv, char **envp)
-{
-	env->argc = argc;
-	env->argv = argv;
-	env->envp = envp;
-	env->path = path_get(envp);
-	if (env->path == NULL)
-		return (0);
-	return (1);
-}

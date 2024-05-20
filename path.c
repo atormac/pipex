@@ -30,7 +30,7 @@ char	**path_get(char **envp)
 	return (NULL);
 }
 
-int	exec_cmd(char *path, char *bin, char **envp)
+int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 {
 	int		ret;
 	char	*cmd;
@@ -39,16 +39,16 @@ int	exec_cmd(char *path, char *bin, char **envp)
 	ret = 0;
 	arg_arr = ft_split(bin, ' ');
 	if (!arg_arr)
-		return (0);
+		exit_error(px, EXIT_FAILURE);
 	cmd = path_join(path, arg_arr[0]);
 	if (!cmd)
 	{
 		free_array(arg_arr);
-		error_exit(NULL);
+		exit_error(px, EXIT_FAILURE);
 	}
 	if (access(cmd, F_OK) == 0)
 	{
-		if (execve(cmd, arg_arr, envp) != -1)
+		if (execve(cmd, arg_arr, px->envp) != -1)
 			ret = 1;
 	}
 	free_array(arg_arr);
@@ -56,16 +56,16 @@ int	exec_cmd(char *path, char *bin, char **envp)
 	return (ret);
 }
 
-int	path_exec(char *cmd, t_env_info *env)
+int	path_exec(char *cmd, t_pipex_s *px)
 {
 	int		ret;
 	int		i;
 
 	ret = 0;
 	i = 0;
-	while (env->path[i])
+	while (px->path[i])
 	{
-		if (exec_cmd(env->path[i], cmd, env->envp) == 1)
+		if (exec_cmd(px->path[i], cmd, px) == 1)
 		{
 			ret = 1;
 			break ;

@@ -12,12 +12,9 @@
 
 #include "pipex.h"
 
-void	exit_child(int code, int *pipefd, int fd, t_env_info* env)
+void exit_error(t_pipex_s *px, int code)
 {
-	close(pipefd[0]);
-	close(pipefd[1]);
-	close(fd);
-	free_array(env->path);
+	pipex_free_close(px);
 	exit(code);
 }
 

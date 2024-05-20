@@ -20,23 +20,28 @@
 # include <string.h>
 # include <errno.h>
 
-typedef struct t_env_info
+typedef struct t_pipex_s
 {
+	int		file1;
+	int		file2;
 	int		argc;
 	char	**argv;
 	char	**envp;
 	char	**path;
-}	t_env_info;
+	int		*pipes;
+	int		*pids;
+}	t_pipex_s;
 
-int		*pid_init(t_env_info *env);
-int		*pipes_init(t_env_info *env);
-void	pipes_close(t_env_info *env, int *pipes);
+void	pipex_free_close(t_pipex_s *px);
+int		*pid_init(int argc);
+int		pid_wait(pid_t pid);
+int		*pipes_init(int argc);
+void	pipes_close(t_pipex_s *px, int *pipes);
 char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);
-int		path_exec(char *cmd, t_env_info *env);
+int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
-int		env_init(t_env_info *env, int argc, char **argv, char **envp);
-void	exit_child(int code, int *pipefd, int fd, t_env_info* env);
+void	exit_error(t_pipex_s *px, int code);
 void	error_cmd(char *cmd);
 void	error_file(char *cmd);
 void	error_exit(char *str);

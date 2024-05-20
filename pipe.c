@@ -1,25 +1,34 @@
 #include "pipex.h"
 
 
-int *pid_init(t_env_info *env)
+int *pid_init(int argc)
 {
 	int	cmd_count;
 
-	cmd_count = env->argc - 3;
+	cmd_count = argc - 3;
 	return (malloc(cmd_count * sizeof(int)));
 }
 
-int *pipes_init(t_env_info *env)
+int	pid_wait(pid_t pid)
+{
+	int		status;
+
+	waitpid(pid, &status, 0);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	return (EXIT_FAILURE);
+}
+
+int *pipes_init(int argc)
 {
 	int i = 0;
-	int cmd_count = env->argc - 3;
+	int cmd_count = argc - 3;
 	int	*pipes = malloc((cmd_count - 1) * (2 * sizeof(int)));
 	
 	if (!pipes)
 		return (NULL);
 	while (i < (cmd_count - 1))
 	{
-		ft_putstr_fd("pipe allocated\n", 1);
 		if (pipe(pipes + (i * 2)) < 0)
 		{
 			ft_putstr_fd("pipe() failed\n", 1);
@@ -29,10 +38,13 @@ int *pipes_init(t_env_info *env)
 	return (pipes);
 }
 
-void pipes_close(t_env_info *env, int *pipes)
+void pipes_close(t_pipex_s *px, int *pipes)
 {
-	int cmd_count = env->argc - 3;
+	int cmd_count = px->argc - 3;
 	int i = 0;
+
+	if (!pipes)
+		return;
 	while (i < (cmd_count - 1))
 	{
 		int *pipefd = pipes + (i * 2);
@@ -41,4 +53,5 @@ void pipes_close(t_env_info *env, int *pipes)
 		i++;
 	}
 	free(pipes);
+	px->pipes = NULL;
 }
