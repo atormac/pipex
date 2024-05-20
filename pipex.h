@@ -53,5 +53,6 @@ int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
 void	error_output(int error, char *str);
 void	exit_error(t_pipex_s *px, int error, char *str, int code);
+void	exit_silent(t_pipex_s *px, int code);
 
 #endif

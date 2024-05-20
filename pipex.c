@@ -49,7 +49,11 @@ void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
 void	pipex_child(t_pipex_s *px, int file1, int i)
 {
 	if (i == 0)
+	{
+		if (px->file1 == -1)
+			exit_silent(px, 127);
 		pipex_dup(px, px->pipes[i * 2 + 1], file1);
+	}
 	else if ((i + 1) == (px->argc - 3))
 	{
 		px->file2 = open(px->argv[px->argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
@@ -62,8 +66,7 @@ void	pipex_child(t_pipex_s *px, int file1, int i)
 	pipes_close(px, px->pipes);
 	if (!path_exec(px->argv[i + 2], px))
 		exit_error(px, PX_ERR_CMD, px->argv[i + 2], 127);
-	pipex_free_close(px);
-	exit(EXIT_SUCCESS);
+	exit_silent(px, EXIT_SUCCESS);
 }
 
 
