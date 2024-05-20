@@ -14,11 +14,12 @@ NAME = pipex
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -g
 SOURCES = main.c pipex.c pipe.c path.c utils.c exit_error.c
-OBJECTS = $(SOURCES:.c=.o)
+BUILDDIR = mandatory
+OBJECTS = $(addprefix $(BUILDDIR)/,$(SOURCES:.c=.o))
 LIBDIR = ./libft
 
-%.o: %.c
-	$(CC) -c $(CFLAGS) $?
+$(BUILDDIR)/%.o: %.c
+	$(CC) -I$(BUILDDIR) -c $(CFLAGS) $< -o $@
 
 all: $(NAME)
 
