@@ -17,6 +17,8 @@ void	error_output(int error, char *str)
 	ft_putstr_fd("pipex: ", STDERR_FILENO);
 	if (error == PX_ERR_FILE)
 		ft_putstr_fd("no such file or directory: ", STDERR_FILENO);
+	else if (error == PX_ERR_PERMS)
+		ft_putstr_fd("permissions denied: ", STDERR_FILENO);
 	else if (error == PX_ERR_CMD)
 		ft_putstr_fd("command not found: ", STDERR_FILENO);
 	else if (error == PX_ERR_FORK)

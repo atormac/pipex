@@ -53,6 +53,8 @@ void	pipex_child(t_pipex_s *px, int i)
 {
 	if (i == 0)
 	{
+		if (access(px->argv[1], F_OK) == 0 && access(px->argv[1], R_OK) == -1)
+			exit_error(px, PX_ERR_PERMS, px->argv[1], 126);
 		px->file1 = open(px->argv[1], O_RDONLY, 0644);
 		if (px->file1 == -1)
 			exit_error(px, PX_ERR_FILE, px->argv[1], 127);

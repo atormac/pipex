@@ -23,6 +23,7 @@
 enum
 {
 	PX_ERR_FILE,
+	PX_ERR_PERMS,
 	PX_ERR_CMD,
 	PX_ERR_FORK,
 	PX_ERR_DUP2,
