@@ -26,7 +26,7 @@ int	*pipes_init(int argc)
 	int	*pipes;
 	
 	i = 0;
-	cmd_count - argc - 3;
+	cmd_count = argc - 3;
 	pipes = malloc((cmd_count - 1) * (2 * sizeof(int)));
 	while (pipes && i < (cmd_count - 1))
 	{
