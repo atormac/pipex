@@ -12,46 +12,25 @@
 
 #include "pipex.h"
 
-void exit_error(t_pipex_s *px, int code)
+void	error_output(int error, char *str)
 {
+	ft_putstr_fd("pipex: ", STDERR_FILENO);
+	if (error == PX_ERR_FILE)
+		ft_putstr_fd("no such file or directory: ", STDERR_FILENO);
+	else if (error == PX_ERR_CMD)
+		ft_putstr_fd("command not found: ", STDERR_FILENO);
+	else if (error == PX_ERR_FORK)
+		ft_putstr_fd("fork() error", STDERR_FILENO);
+	else if (error == PX_ERR_DUP2)
+		ft_putstr_fd("dup2() error", STDERR_FILENO);
+	if (str)
+		ft_putstr_fd(str, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+}
+
+void exit_error(t_pipex_s *px, int error, char *str, int code)
+{
+	error_output(error, str);
 	pipex_free_close(px);
 	exit(code);
-}
-
-void	error_cmd(char *cmd)
-{
-	char	*sp;
-
-	sp  = ft_strchr(cmd, ' ');
-	if (sp)
-		cmd[sp - cmd] = '\0';
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
-	ft_putstr_fd("command not found: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}
-
-void	error_file(char *cmd)
-{
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
-	ft_putstr_fd("no such file or directory: ", STDERR_FILENO);
-	ft_putstr_fd(cmd, STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-}
-
-void	error_exit(char *str)
-{
-	ft_putstr_fd("pipex: ", STDERR_FILENO);
-	if (str)
-	{
-		ft_putstr_fd(strerror(errno), STDERR_FILENO);
-		ft_putstr_fd(": ", STDERR_FILENO);
-		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putstr_fd("\n", STDERR_FILENO);
-	}
-	else
-	{
-		perror(NULL);
-	}
-	exit(EXIT_FAILURE);
 }

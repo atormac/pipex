@@ -20,6 +20,16 @@
 # include <string.h>
 # include <errno.h>
 
+enum
+{
+	PX_ERR_FILE,
+	PX_ERR_CMD,
+	PX_ERR_FORK,
+	PX_ERR_DUP2,
+	PX_ERR_MALLOC,
+	PX_ERR_SPLIT
+};
+
 typedef struct t_pipex_s
 {
 	int		file1;
@@ -41,9 +51,7 @@ char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
-void	exit_error(t_pipex_s *px, int code);
-void	error_cmd(char *cmd);
-void	error_file(char *cmd);
-void	error_exit(char *str);
+void	error_output(int error, char *str);
+void	exit_error(t_pipex_s *px, int error, char *str, int code);
 
 #endif

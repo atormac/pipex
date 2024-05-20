@@ -39,12 +39,12 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	ret = 0;
 	arg_arr = ft_split(bin, ' ');
 	if (!arg_arr)
-		exit_error(px, EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, NULL, EXIT_FAILURE);
 	cmd = path_join(path, arg_arr[0]);
 	if (!cmd)
 	{
 		free_array(arg_arr);
-		exit_error(px, EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, NULL, EXIT_FAILURE);
 	}
 	if (access(cmd, F_OK) == 0)
 	{

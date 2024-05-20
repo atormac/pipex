@@ -41,9 +41,9 @@ void pipex_free_close(t_pipex_s *px)
 void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
 {
 	if (dup2(fd_write, STDOUT_FILENO) == -1)
-		exit_error(px, EXIT_FAILURE);
+		exit_error(px, PX_ERR_DUP2, 0, EXIT_FAILURE);
 	if (dup2(fd_read, STDIN_FILENO) == -1)
-		exit_error(px, EXIT_FAILURE);
+		exit_error(px, PX_ERR_DUP2, 0, EXIT_FAILURE);
 }
 
 void	pipex_child(t_pipex_s *px, int file1, int i)
@@ -54,21 +54,16 @@ void	pipex_child(t_pipex_s *px, int file1, int i)
 	{
 		px->file2 = open(px->argv[px->argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (px->file2 == -1)
-		{
-			error_file(px->argv[px->argc - 1]);
-			exit_error(px, EXIT_FAILURE);
-		}
+			exit_error(px, PX_ERR_FILE, px->argv[px->argc - 1], EXIT_FAILURE);
 		pipex_dup(px, px->file2, px->pipes[(i - 1) * 2]);
 	}
 	else
 		pipex_dup(px, px->pipes[i * 2 + 1], px->pipes[(i - 1) * 2]);
 	pipes_close(px, px->pipes);
 	if (!path_exec(px->argv[i + 2], px))
-	{
-		error_cmd(px->argv[i + 2]);
-		exit_error(px, 127);
-	}
-	exit_error(px, EXIT_SUCCESS);
+		exit_error(px, PX_ERR_CMD, px->argv[i + 2], 127);
+	pipex_free_close(px);
+	exit(EXIT_SUCCESS);
 }
 
 
@@ -82,7 +77,10 @@ int pipex_main(t_pipex_s *px, int file1)
 	{
 		px->pids[i] = fork();
 		if (px->pids[i] < 0)
+		{
+			exit_error(px, PX_ERR_FORK, NULL, EXIT_FAILURE);
 			return (0);
+		}
 		if (px->pids[i] == 0)
 			pipex_child(px, file1, i);
 		i++;
@@ -100,7 +98,7 @@ int	main(int argc, char **argv, char **envp)
 	int			f1;
 	int			code;
 
-	if (argc < 5)
+	if (argc != 5)
 	{
 		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", 1);
 		return (EXIT_SUCCESS);
@@ -108,7 +106,7 @@ int	main(int argc, char **argv, char **envp)
 	code = EXIT_FAILURE;
 	f1 = open(argv[1], O_RDONLY, 0644);
 	if (f1 == -1)
-		error_file(argv[1]);
+		error_output(PX_ERR_FILE, argv[1]);
 	if (pipex_init(&px, argc, argv, envp))
 		code = pipex_main(&px, f1);
 	pipex_free_close(&px);
