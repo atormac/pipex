@@ -12,7 +12,7 @@
 
 #include "pipex.h"
 
-int	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
+void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 {
 	px->file1 = -1;
 	px->file2 = -1;
@@ -22,9 +22,12 @@ int	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 	px->path = path_get(envp);
 	px->pids = pid_init(argc);
 	px->pipes = pipes_init(argc);
-	if (!px->path || !px->pids || !px->pipes)
-		return (0);
-	return (1);
+	if (!px->path)
+		exit_error(px, PX_ERR_PATH, 0, EXIT_FAILURE);
+	if (!px->pids)
+		exit_error(px, PX_ERR_PIDS, 0, EXIT_FAILURE);
+	if (!px->pipes)
+		exit_error(px, PX_ERR_PIPES, 0, EXIT_FAILURE);
 }
 
 void pipex_free_close(t_pipex_s *px)
@@ -46,13 +49,14 @@ void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
 		exit_error(px, PX_ERR_DUP2, 0, EXIT_FAILURE);
 }
 
-void	pipex_child(t_pipex_s *px, int file1, int i)
+void	pipex_child(t_pipex_s *px, int i)
 {
 	if (i == 0)
 	{
+		px->file1 = open(px->argv[1], O_RDONLY, 0644);
 		if (px->file1 == -1)
-			exit_silent(px, 127);
-		pipex_dup(px, px->pipes[i * 2 + 1], file1);
+			exit_error(px, PX_ERR_FILE, px->argv[1], 127);
+		pipex_dup(px, px->pipes[i * 2 + 1], px->file1);
 	}
 	else if ((i + 1) == (px->argc - 3))
 	{
@@ -70,12 +74,11 @@ void	pipex_child(t_pipex_s *px, int file1, int i)
 }
 
 
-int pipex_main(t_pipex_s *px, int file1)
+int pipex_main(t_pipex_s *px)
 {
 	int		exit_code;
 	int		i = 0;
 
-	px->file1 = file1;
 	while (i < (px->argc - 3))
 	{
 		px->pids[i] = fork();
@@ -85,7 +88,7 @@ int pipex_main(t_pipex_s *px, int file1)
 			return (0);
 		}
 		if (px->pids[i] == 0)
-			pipex_child(px, file1, i);
+			pipex_child(px, i);
 		i++;
 	}
 	pipes_close(px, px->pipes);
@@ -98,7 +101,6 @@ int pipex_main(t_pipex_s *px, int file1)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex_s	px;
-	int			f1;
 	int			code;
 
 	if (argc != 5)
@@ -107,11 +109,8 @@ int	main(int argc, char **argv, char **envp)
 		return (EXIT_SUCCESS);
 	}
 	code = EXIT_FAILURE;
-	f1 = open(argv[1], O_RDONLY, 0644);
-	if (f1 == -1)
-		error_output(PX_ERR_FILE, argv[1]);
-	if (pipex_init(&px, argc, argv, envp))
-		code = pipex_main(&px, f1);
+	pipex_init(&px, argc, argv, envp);
+	code = pipex_main(&px);
 	pipex_free_close(&px);
 	return (code);
 }

@@ -17,6 +17,8 @@ char	**path_get(char **envp)
 	int		i;
 
 	i = 0;
+	if (!envp)
+		return NULL;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
@@ -60,6 +62,7 @@ int	path_exec(char *cmd, t_pipex_s *px)
 {
 	int		ret;
 	int		i;
+	char	*sp;
 
 	ret = 0;
 	i = 0;
@@ -71,6 +74,13 @@ int	path_exec(char *cmd, t_pipex_s *px)
 			break ;
 		}
 		i++;
+	}
+	if (ret == 0)
+	{
+		sp = ft_strchr(cmd, ' ');
+		if (sp)
+			cmd[sp - cmd] = 0;
+		exit_error(px, PX_ERR_CMD, cmd, 127);
 	}
 	return (ret);
 }

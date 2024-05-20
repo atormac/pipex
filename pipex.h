@@ -27,7 +27,9 @@ enum
 	PX_ERR_FORK,
 	PX_ERR_DUP2,
 	PX_ERR_MALLOC,
-	PX_ERR_SPLIT
+	PX_ERR_PATH,
+	PX_ERR_PIDS,
+	PX_ERR_PIPES
 };
 
 typedef struct t_pipex_s
