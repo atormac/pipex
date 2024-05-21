@@ -6,13 +6,13 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/21 19:22:36 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/21 19:24:54 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 MANDATORYDIR = mandatory
 BONUSDIR = bonus
 SOURCES = main.c pipex.c pipe.c path.c utils.c exit_error.c
