@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:04 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:54:23 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 20:00:28 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,7 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 	px->file2 = -1;
 	px->cmd_count = argc - 3;
 	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
-	{
-		here_doc(argv);
 		px->cmd_count--;
-	}
 	px->argc = argc;
 	px->argv = argv;
 	px->envp = envp;
@@ -34,6 +31,8 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 		exit_error(px, PX_ERR_PIDS, 0, EXIT_FAILURE);
 	if (!px->pipes)
 		exit_error(px, PX_ERR_PIPES, 0, EXIT_FAILURE);
+	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
+		here_doc(argv);
 }
 
 void pipex_free_close(t_pipex_s *px)
