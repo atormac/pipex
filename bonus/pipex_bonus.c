@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:04 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:27:15 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 19:39:44 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ void pipex_free_close(t_pipex_s *px)
 	pipes_close(px, px->pipes);
 	free(px->pids);
 	free_array(px->path);
+	unlink("heredoc");
 }
 
 void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
