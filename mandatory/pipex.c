@@ -62,6 +62,8 @@ void	pipex_child(t_pipex_s *px, int i)
 	}
 	else if ((i + 1) == (px->argc - 3))
 	{
+		if (access(px->argv[px->argc -1], F_OK) == 0 && access(px->argv[px->argc -1], W_OK) == -1)
+			exit_error(px, PX_ERR_PERMS, px->argv[px->argc - 1], 126);
 		px->file2 = open(px->argv[px->argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (px->file2 == -1)
 			exit_error(px, PX_ERR_FILE, px->argv[px->argc - 1], EXIT_FAILURE);
