@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 17:00:36 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 17:03:47 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 17:07:23 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,13 @@ int	here_doc(char **argv)
 	fd = open("heredoc", O_CREAT | O_WRONLY | O_TRUNC);
 	if (fd == -1)
 		return (0);
+	dup2(fd, STDIN_FILENO);
 	while (1)
 	{
 		line = get_next_line(
-
+		if (strncmp(line, argv[2], ft_strlen(argv[2])) == 0)
+			break;
+		write(fd, line, ft_strlen(line));
 	}
 	return (1);
 }
