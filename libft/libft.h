@@ -17,12 +17,32 @@
 # include <limits.h>
 # include <stdint.h>
 
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 32
+#endif
+
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
 
+typedef struct t_write_state
+{
+	ssize_t	bytes_written;
+	ssize_t	ret_val;
+}	t_write_state;
+
+void	ft_write(struct t_write_state *ws, char *buf, size_t buf_size);
+void	print_char(struct t_write_state *ws, int c);
+void	print_string(struct t_write_state *ws, char *str);
+void	print_integer(struct t_write_state *ws, int n);
+void	print_unsigned(struct t_write_state *ws, unsigned int n);
+void	print_ptr(struct t_write_state *ws, unsigned long long ptr);
+void	print_hex(struct t_write_state *ws, unsigned int n, int is_lower);
+void	hex_uint(struct t_write_state *ws, unsigned int n, int is_lower);
+void	print_hex_ptr(struct t_write_state *ws, unsigned long long n);
+int		ft_printf(const char *f, ...);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -58,6 +78,7 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+char	*get_next_line(int fd);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstadd_back(t_list **lst, t_list *new);

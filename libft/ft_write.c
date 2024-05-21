@@ -1,37 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   ft_write.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/15 17:25:16 by atorma            #+#    #+#             */
-/*   Updated: 2024/04/23 17:55:12 by atorma           ###   ########.fr       */
+/*   Created: 2024/04/30 13:23:30 by atorma            #+#    #+#             */
+/*   Updated: 2024/05/01 12:51:11 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+void	ft_write(struct t_write_state *ws, char *buf, size_t buf_size)
 {
-	size_t	i;
-	size_t	j;
+	ssize_t	ret;
 
-	i = 0;
-	if (needle && *needle == '\0')
-		return ((char *)haystack);
-	while (i <= len && haystack[i])
-	{
-		j = 0;
-		while (haystack[i + j] && haystack[i + j] == needle[j])
-		{
-			j++;
-			if (i + j > len)
-				return (NULL);
-		}
-		if (needle[j] == 0)
-			return ((char *)haystack + i);
-		i++;
-	}
-	return (NULL);
+	if (buf_size == 0 || ws->ret_val == -1)
+		return ;
+	ret = write(1, buf, buf_size);
+	if (ret < 0)
+		ws->ret_val = -1;
+	ws->bytes_written += ret;
 }
