@@ -6,13 +6,13 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:24:37 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/18 17:47:05 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 19:17:43 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
-# include "../libft/libft.h"
+# include "../libft_mod/libft.h"
 # include <fcntl.h>
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -37,6 +37,7 @@ typedef struct t_pipex_s
 {
 	int		file1;
 	int		file2;
+	int		cmd_count;
 	int		argc;
 	char	**argv;
 	char	**envp;
@@ -48,14 +49,17 @@ typedef struct t_pipex_s
 void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp);
 int		pipex_main(t_pipex_s *px);
 void	pipex_free_close(t_pipex_s *px);
-int		*pid_init(int argc);
+int		*pid_init(int cmd_count);
+int		*pipes_init(int cmd_count);
 int		pid_wait(pid_t pid);
-int		*pipes_init(int argc);
 void	pipes_close(t_pipex_s *px, int *pipes);
 char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
+int		here_doc(char **argv);
+int		open_file1(t_pipex_s *px, int is_heredoc);
+int		open_file2(t_pipex_s *px, int is_heredoc);
 void	error_output(int error, char *str);
 void	exit_error(t_pipex_s *px, int error, char *str, int code);
 void	exit_silent(t_pipex_s *px, int code);

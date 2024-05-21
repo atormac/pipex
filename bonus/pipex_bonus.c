@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 16:21:07 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 19:17:54 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,18 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 {
 	px->file1 = -1;
 	px->file2 = -1;
+	px->cmd_count = argc - 3;
+	if (ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
+	{
+		here_doc(argv);
+		px->cmd_count--;
+	}
 	px->argc = argc;
 	px->argv = argv;
 	px->envp = envp;
 	px->path = path_get(envp);
-	px->pids = pid_init(argc);
-	px->pipes = pipes_init(argc);
+	px->pids = pid_init(px->cmd_count);
+	px->pipes = pipes_init(px->cmd_count);
 	if (!px->path)
 		exit_error(px, PX_ERR_PATH, 0, EXIT_FAILURE);
 	if (!px->pids)
@@ -49,30 +55,22 @@ void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
 		exit_error(px, PX_ERR_DUP2, 0, EXIT_FAILURE);
 }
 
-void	pipex_child(t_pipex_s *px, int i)
+void	pipex_child(t_pipex_s *px, int i, int is_heredoc)
 {
 	if (i == 0)
 	{
-		if (access(px->argv[1], F_OK) == 0 && access(px->argv[1], R_OK) == -1)
-			exit_error(px, PX_ERR_PERMS, px->argv[1], 126);
-		px->file1 = open(px->argv[1], O_RDONLY, 0644);
-		if (px->file1 == -1)
-			exit_error(px, PX_ERR_FILE, px->argv[1], 127);
+		px->file1 = open_file1(px, is_heredoc);
 		pipex_dup(px, px->pipes[i * 2 + 1], px->file1);
 	}
-	else if ((i + 1) == (px->argc - 3))
+	else if ((i + 1) == px->cmd_count)
 	{
-		if (access(px->argv[px->argc -1], F_OK) == 0 && access(px->argv[px->argc -1], W_OK) == -1)
-			exit_error(px, PX_ERR_PERMS, px->argv[px->argc - 1], 126);
-		px->file2 = open(px->argv[px->argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (px->file2 == -1)
-			exit_error(px, PX_ERR_FILE, px->argv[px->argc - 1], EXIT_FAILURE);
+		px->file2 = open_file2(px, is_heredoc);
 		pipex_dup(px, px->file2, px->pipes[(i - 1) * 2]);
 	}
 	else
 		pipex_dup(px, px->pipes[i * 2 + 1], px->pipes[(i - 1) * 2]);
 	pipes_close(px, px->pipes);
-	path_exec(px->argv[i + 2], px);
+	path_exec(px->argv[i + 2 + is_heredoc], px);
 	exit_silent(px, EXIT_SUCCESS);
 }
 
@@ -80,8 +78,12 @@ int pipex_main(t_pipex_s *px)
 {
 	int		exit_code;
 	int		i = 0;
+	int		is_heredoc;
 
-	while (i < (px->argc - 3))
+	is_heredoc = 0;
+	if (px->cmd_count < (px->argc - 3))
+		is_heredoc = 1;
+	while (i < px->cmd_count)
 	{
 		px->pids[i] = fork();
 		if (px->pids[i] < 0)
@@ -90,12 +92,12 @@ int pipex_main(t_pipex_s *px)
 			return (0);
 		}
 		if (px->pids[i] == 0)
-			pipex_child(px, i);
+			pipex_child(px, i, is_heredoc);
 		i++;
 	}
 	pipes_close(px, px->pipes);
 	i = 0;
-	while (i < px->argc - 3)
+	while (i < px->cmd_count)
 		exit_code = pid_wait(px->pids[i++]);
 	return (exit_code);
 }

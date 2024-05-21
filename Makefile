@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/21 16:40:14 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/21 17:34:00 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ B_SOURCES = main_bonus.c pipex_bonus.c pipe_bonus.c path_bonus.c \
 			utils_bonus.c exit_error_bonus.c
 OBJECTS = $(addprefix $(MANDATORYDIR)/,$(SOURCES:.c=.o))
 B_OBJECTS = $(addprefix $(BONUSDIR)/,$(B_SOURCES:.c=.o))
-LIBDIR = ./libft
+LIBDIR = ./libft_mod
 
 
 all: $(NAME)
@@ -37,7 +37,7 @@ $(BONUSDIR)/%.o: %.c
 
 .bonus: $(B_OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o pipex $(CFLAGS) $^ ./libft/libft.a
+	$(CC) -o pipex $(CFLAGS) $^ ./libft_mod/libft.a
 	touch .bonus
 
 bonus: .bonus
