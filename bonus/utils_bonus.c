@@ -37,6 +37,7 @@ int	here_doc(char **argv)
 		return (0);
 	while (1)
 	{
+		write(1, "pipe heredoc>", sizeof("pipe heredoc>") - 1);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break;
