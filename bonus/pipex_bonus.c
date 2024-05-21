@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:04 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:39:44 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 19:54:23 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 	px->file1 = -1;
 	px->file2 = -1;
 	px->cmd_count = argc - 3;
-	if (ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
+	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
 	{
 		here_doc(argv);
 		px->cmd_count--;
