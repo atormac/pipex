@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/18 19:31:38 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 19:36:18 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,20 +53,12 @@ void	pipex_child(t_pipex_s *px, int i)
 {
 	if (i == 0)
 	{
-		if (access(px->argv[1], F_OK) == 0 && access(px->argv[1], R_OK) == -1)
-			exit_error(px, PX_ERR_PERMS, px->argv[1], 126);
-		px->file1 = open(px->argv[1], O_RDONLY, 0644);
-		if (px->file1 == -1)
-			exit_error(px, PX_ERR_FILE, px->argv[1], 127);
+		px->file1 = open_file1(px);
 		pipex_dup(px, px->pipes[i * 2 + 1], px->file1);
 	}
 	else if ((i + 1) == (px->argc - 3))
 	{
-		if (access(px->argv[px->argc -1], F_OK) == 0 && access(px->argv[px->argc -1], W_OK) == -1)
-			exit_error(px, PX_ERR_PERMS, px->argv[px->argc - 1], 126);
-		px->file2 = open(px->argv[px->argc - 1], O_CREAT | O_WRONLY | O_TRUNC, 0644);
-		if (px->file2 == -1)
-			exit_error(px, PX_ERR_FILE, px->argv[px->argc - 1], EXIT_FAILURE);
+		px->file2 = open_file2(px);
 		pipex_dup(px, px->file2, px->pipes[(i - 1) * 2]);
 	}
 	else

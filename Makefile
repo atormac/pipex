@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/21 19:24:54 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/21 19:35:01 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,6 +45,7 @@ bonus: .bonus
 clean:
 	$(MAKE) -C $(LIBDIR) $@
 	rm -f $(OBJECTS)
+	rm -f $(B_OBJECTS)
 
 fclean: clean
 	rm -f $(NAME)
