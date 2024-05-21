@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/21 16:23:16 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/21 16:40:14 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ $(BONUSDIR)/%.o: %.c
 
 .bonus: $(B_OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o $($NAME) $(CFLAGS) $^ ./libft/libft.a
+	$(CC) -o pipex $(CFLAGS) $^ ./libft/libft.a
 	touch .bonus
 
 bonus: .bonus
