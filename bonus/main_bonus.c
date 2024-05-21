@@ -6,17 +6,24 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 17:00:36 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 17:01:15 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/21 17:03:47 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-int	here_doc()
+int	here_doc(char **argv)
 {
+	int	fd;
+
+	fd = open("heredoc", O_CREAT | O_WRONLY | O_TRUNC);
+	if (fd == -1)
+		return (0);
 	while (1)
 	{
+		line = get_next_line(
 
 	}
+	return (1);
 }
 
 int	main(int argc, char **argv, char **envp)
