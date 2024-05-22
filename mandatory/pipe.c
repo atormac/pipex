@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:25:55 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 16:10:49 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 18:05:47 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ int	pid_wait(pid_t pid)
 	return (EXIT_FAILURE);
 }
 
-int	*pipes_init(int argc)
+int	*pipes_init(t_pipex_s *px, int cmd_count)
 {
 	int	i;
-	int	cmd_count;
 	int	*pipes;
 
 	i = 0;
-	cmd_count = argc - 3;
 	pipes = malloc((cmd_count - 1) * (2 * sizeof(int)));
+	if (!pipes)
+		exit_error(px, PX_ERR_MALLOC, "pipes_init", 1);
 	while (pipes && i < (cmd_count - 1))
 	{
 		if (pipe(pipes + (i * 2)) < 0)

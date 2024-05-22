@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:37:21 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 16:58:14 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 18:06:40 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	error_output(int error, char *str)
 	else if (error == PX_ERR_PIDS)
 		ft_putstr_fd("pid_init() failed malloc", STDERR_FILENO);
 	else if (error == PX_ERR_PIPES)
-		ft_putstr_fd("pipe() failed", STDERR_FILENO);
+		ft_putstr_fd("pipe() creation failed", STDERR_FILENO);
 	else if (error == PX_ERR_MALLOC)
 		ft_putstr_fd("malloc() failed in ", STDERR_FILENO);
 	ft_putstr_fd(str, STDERR_FILENO);

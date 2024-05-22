@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 17:20:35 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 18:10:47 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,18 +30,6 @@ char	**path_get(char **envp)
 	return (NULL);
 }
 
-void	is_exec(t_pipex_s *px, char *cmd)
-{
-	char	*sp;
-
-	if (access(cmd, X_OK) != 0)
-	{
-		sp = ft_strchr(cmd, ' ');
-		cmd[sp - cmd] = 0;
-		exit_error(px, PX_ERR_PERMS, cmd, 126);
-	}
-}
-
 int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 {
 	int		ret;
@@ -60,8 +48,9 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	}
 	if (access(cmd, F_OK) == 0)
 	{
-		is_exec(px, bin);
-		if (execve(cmd, arg_arr, px->envp) != -1)
+		if (access(cmd, X_OK) != 0)
+			ret = -1;
+		else if (execve(cmd, arg_arr, px->envp) != -1)
 			ret = 1;
 	}
 	free_array(arg_arr);
@@ -79,18 +68,20 @@ int	path_exec(char *cmd, t_pipex_s *px)
 	i = 0;
 	while (px->path[i])
 	{
-		if (exec_cmd(px->path[i], cmd, px) == 1)
-		{
-			ret = 1;
+		ret = exec_cmd(px->path[i], cmd, px);
+		if (ret == 1 || ret == -1)
 			break ;
-		}
 		i++;
 	}
-	if (ret == 0)
+	if (ret == 0 || ret == -1)
 	{
 		sp = ft_strchr(cmd, ' ');
-		cmd[sp - cmd] = 0;
-		exit_error(px, PX_ERR_CMD, cmd, 127);
+		if (sp)
+			cmd[sp - cmd] = 0;
+		if (ret == 0)
+			exit_error(px, PX_ERR_CMD, cmd, 127);
+		if (ret == -1)
+			exit_error(px, PX_ERR_PERMS, cmd, 126);
 	}
 	return (ret);
 }
