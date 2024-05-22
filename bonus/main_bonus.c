@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 17:00:36 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:26:40 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 17:11:36 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc, char **argv, char **envp)
 
 	if (argc < 5)
 	{
-		ft_putstr_fd("Usage: ./pipex file1 cmd1 cmd2 file2\n", 1);
+		ft_putstr_fd("Usage: ./pipex file1 cmd1 ... cmdn file2\n", 1);
 		return (EXIT_SUCCESS);
 	}
 	code = EXIT_FAILURE;

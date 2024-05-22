@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:04 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 15:25:34 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 17:17:48 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 	px->argc = argc;
 	px->argv = argv;
 	px->envp = envp;
+	px->path = NULL;
+	px->pids = NULL;
+	px->pipes = NULL;
 	px->path = path_get(envp);
 	px->pids = pid_init(px->cmd_count);
 	px->pipes = pipes_init(px, px->cmd_count);
@@ -44,7 +47,8 @@ void	pipex_free_close(t_pipex_s *px)
 	pipes_close(px, px->pipes);
 	free(px->pids);
 	free_array(px->path);
-	unlink("heredoc");
+	if (px->cmd_count < (px->argc - 3))
+		unlink("heredoc");
 }
 
 void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)

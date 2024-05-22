@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 15:28:19 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 17:20:35 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,23 @@ char	**path_get(char **envp)
 	{
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
-			if ((envp[i] + 5) == NULL)
-				break ;
 			return (ft_split(envp[i] + 5, ':'));
 		}
 		i++;
 	}
 	return (NULL);
+}
+
+void	is_exec(t_pipex_s *px, char *cmd)
+{
+	char	*sp;
+
+	if (access(cmd, X_OK) != 0)
+	{
+		sp = ft_strchr(cmd, ' ');
+		cmd[sp - cmd] = 0;
+		exit_error(px, PX_ERR_PERMS, cmd, 126);
+	}
 }
 
 int	exec_cmd(char *path, char *bin, t_pipex_s *px)
@@ -41,15 +51,16 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	ret = 0;
 	arg_arr = ft_split(bin, ' ');
 	if (!arg_arr)
-		exit_error(px, PX_ERR_MALLOC, "in split", EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, "split", EXIT_FAILURE);
 	cmd = path_join(path, arg_arr[0]);
 	if (!cmd)
 	{
 		free_array(arg_arr);
-		exit_error(px, PX_ERR_MALLOC, "in path_join", EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, "path_join", EXIT_FAILURE);
 	}
 	if (access(cmd, F_OK) == 0)
 	{
+		is_exec(px, bin);
 		if (execve(cmd, arg_arr, px->envp) != -1)
 			ret = 1;
 	}
@@ -78,8 +89,7 @@ int	path_exec(char *cmd, t_pipex_s *px)
 	if (ret == 0)
 	{
 		sp = ft_strchr(cmd, ' ');
-		if (sp)
-			cmd[sp - cmd] = 0;
+		cmd[sp - cmd] = 0;
 		exit_error(px, PX_ERR_CMD, cmd, 127);
 	}
 	return (ret);

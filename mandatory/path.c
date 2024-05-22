@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 16:10:36 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 17:15:44 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,18 @@ char	**path_get(char **envp)
 	return (NULL);
 }
 
+void	is_exec(t_pipex_s *px, char *cmd)
+{
+	char	*sp;
+
+	if (access(cmd, X_OK) != 0)
+	{
+		sp = ft_strchr(cmd, ' ');
+		cmd[sp - cmd] = 0;
+		exit_error(px, PX_ERR_PERMS, cmd, 126);
+	}
+}
+
 int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 {
 	int		ret;
@@ -50,6 +62,7 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	}
 	if (access(cmd, F_OK) == 0)
 	{
+		is_exec(px, bin);
 		if (execve(cmd, arg_arr, px->envp) != -1)
 			ret = 1;
 	}
