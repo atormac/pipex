@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:04 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 14:26:00 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 15:12:05 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 	if (!px->pipes)
 		exit_error(px, PX_ERR_PIPES, 0, EXIT_FAILURE);
 	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
-		here_doc(argv);
+		here_doc(px, argv);
 }
 
 void	pipex_free_close(t_pipex_s *px)

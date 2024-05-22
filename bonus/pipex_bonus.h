@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:39 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 14:22:39 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 15:11:11 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ enum
 	PX_ERR_MALLOC,
 	PX_ERR_PATH,
 	PX_ERR_PIDS,
-	PX_ERR_PIPES
+	PX_ERR_PIPES,
+	PX_ERR_HEREDOC_FILE,
+	PX_ERR_GET_NEXT_LINE
 };
 
 typedef struct t_pipex_s
@@ -57,7 +59,7 @@ char	**path_get(char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
-int		here_doc(char **argv);
+int		here_doc(t_pipex_s *px, char **argv);
 int		open_file1(t_pipex_s *px, int is_heredoc);
 int		open_file2(t_pipex_s *px, int is_heredoc);
 void	error_output(int error, char *str);
