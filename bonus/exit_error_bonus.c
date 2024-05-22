@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 15:10:17 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 19:23:21 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	error_output(int error, char *str)
 		ft_putstr_fd("could not open heredoc file", STDERR_FILENO);
 	else if (error == PX_ERR_GET_NEXT_LINE)
 		ft_putstr_fd("get_next_line() failed", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
+	if (str)
+		ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 

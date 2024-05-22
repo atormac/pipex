@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:37:21 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 18:06:40 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 19:23:08 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	error_output(int error, char *str)
 		ft_putstr_fd("pipe() creation failed", STDERR_FILENO);
 	else if (error == PX_ERR_MALLOC)
 		ft_putstr_fd("malloc() failed in ", STDERR_FILENO);
-	ft_putstr_fd(str, STDERR_FILENO);
+	if (str)
+		ft_putstr_fd(str, STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
