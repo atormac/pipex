@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 15:22:33 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 15:28:19 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	if (!cmd)
 	{
 		free_array(arg_arr);
-		exit_error(px, PX_ERR_MALLOC, "in malloc", EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, "in path_join", EXIT_FAILURE);
 	}
 	if (access(cmd, F_OK) == 0)
 	{
