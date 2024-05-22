@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 14:19:45 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 15:22:33 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,12 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	ret = 0;
 	arg_arr = ft_split(bin, ' ');
 	if (!arg_arr)
-		exit_error(px, PX_ERR_MALLOC, NULL, EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, "in split", EXIT_FAILURE);
 	cmd = path_join(path, arg_arr[0]);
 	if (!cmd)
 	{
 		free_array(arg_arr);
-		exit_error(px, PX_ERR_MALLOC, NULL, EXIT_FAILURE);
+		exit_error(px, PX_ERR_MALLOC, "in malloc", EXIT_FAILURE);
 	}
 	if (access(cmd, F_OK) == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:18 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 15:13:31 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 15:19:43 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	here_doc(t_pipex_s *px, char **argv)
 
 	fd = open("heredoc", O_CREAT | O_WRONLY | O_EXCL | O_TRUNC, 0644);
 	if (fd == -1)
-		exit_error(px, PX_ERR_HEREDOC_FILE, 0, 1); 
+		exit_error(px, PX_ERR_HEREDOC_FILE, 0, 1);
 	while (1)
 	{
 		write(1, "pipe heredoc>", sizeof("pipe heredoc>") - 1);
@@ -48,7 +48,7 @@ int	here_doc(t_pipex_s *px, char **argv)
 	}
 	close(fd);
 	if (!line)
-		exit_error(px, PX_ERR_GET_NEXT_LINE, 0, 1); 
+		exit_error(px, PX_ERR_GET_NEXT_LINE, 0, 1);
 	free(line);
 	return (1);
 }
