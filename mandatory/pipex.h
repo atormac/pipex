@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:24:37 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 18:01:24 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 19:40:27 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int		*pid_init(int argc);
 int		pid_wait(pid_t pid);
 int		*pipes_init(t_pipex_s *px, int cmd_count);
 void	pipes_close(t_pipex_s *px, int *pipes);
-char	**path_get(char **envp);
+char	**path_get(t_pipex_s *px, char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);

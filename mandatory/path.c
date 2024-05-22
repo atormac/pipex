@@ -6,13 +6,13 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 18:09:51 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 20:46:55 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-char	**path_get(char **envp)
+char	**path_get(t_pipex_s *px, char **envp)
 {
 	int		i;
 	char	**arr;
@@ -25,6 +25,8 @@ char	**path_get(char **envp)
 		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			arr = ft_split(envp[i] + 5, ':');
+			if (!arr)
+				exit_error(px, PX_ERR_MALLOC, "ft_split", 1);
 			return (arr);
 		}
 		i++;
@@ -60,15 +62,30 @@ int	exec_cmd(char *path, char *bin, t_pipex_s *px)
 	return (ret);
 }
 
+void	path_error(int ret, char *cmd, t_pipex_s *px)
+{
+	char	*sp;
+
+	sp = ft_strchr(cmd, ' ');
+	if (sp)
+		cmd[sp - cmd] = 0;
+	if (ret == 0)
+		exit_error(px, PX_ERR_CMD, cmd, 127);
+	if (ret == -1)
+		exit_error(px, PX_ERR_PERMS, cmd, 126);
+}
+
 int	path_exec(char *cmd, t_pipex_s *px)
 {
 	int		ret;
 	int		i;
-	char	*sp;
 
 	ret = 0;
 	i = 0;
-	while (px->path[i])
+	if (!px->path || ft_strchr(cmd, '/'))
+		ret = exec_cmd("", cmd, px);
+	ft_putstr_fd("path search\n", 2);
+	while (px->path && px->path[i])
 	{
 		ret = exec_cmd(px->path[i], cmd, px);
 		if (ret == 1 || ret == -1)
@@ -76,15 +93,7 @@ int	path_exec(char *cmd, t_pipex_s *px)
 		i++;
 	}
 	if (ret == 0 || ret == -1)
-	{
-		sp = ft_strchr(cmd, ' ');
-		if (sp)
-			cmd[sp - cmd] = 0;
-		if (ret == 0)
-			exit_error(px, PX_ERR_CMD, cmd, 127);
-		if (ret == -1)
-			exit_error(px, PX_ERR_PERMS, cmd, 126);
-	}
+		path_error(ret, cmd, px);
 	return (ret);
 }
 
@@ -94,15 +103,14 @@ char	*path_join(char *path, char *bin)
 	size_t	path_len;
 	size_t	bin_len;
 
-	if (!path || ! bin)
-		return (NULL);
 	path_len = ft_strlen(path);
 	bin_len = ft_strlen(bin);
 	ret = malloc(path_len + bin_len + 2);
 	if (!ret)
 		return (NULL);
 	ft_strlcpy(ret, path, path_len + 1);
-	ft_strlcpy(ret + path_len, "/", 2);
+	if (ft_strchr(bin, '/') == 0)
+		ft_strlcpy(ret + path_len, "/", 2);
 	ft_strlcpy(ret + path_len + 1, bin, bin_len + 1);
 	return (ret);
 }
