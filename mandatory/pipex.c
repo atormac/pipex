@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 14:13:13 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 16:02:13 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,6 @@ void	pipex_child(t_pipex_s *px, int i)
 		px->file2 = open_file2(px);
 		pipex_dup(px, px->file2, px->pipes[(i - 1) * 2]);
 	}
-	else
-		pipex_dup(px, px->pipes[i * 2 + 1], px->pipes[(i - 1) * 2]);
 	pipes_close(px, px->pipes);
 	path_exec(px->argv[i + 2], px);
 	exit_silent(px, EXIT_SUCCESS);

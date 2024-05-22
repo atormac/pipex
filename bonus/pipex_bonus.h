@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:39 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 15:24:48 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 15:59:03 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <stdio.h>
-# include <string.h>
 # include <errno.h>
 
 enum
