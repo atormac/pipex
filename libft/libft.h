@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 17:37:08 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 14:32:59 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 18:24:02 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
-# include <stdint.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 32
