@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:26:29 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:19:24 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	error_output(int error, char *str)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-void exit_error(t_pipex_s *px, int error, char *str, int code)
+void	exit_error(t_pipex_s *px, int error, char *str, int code)
 {
 	error_output(error, str);
 	pipex_free_close(px);
 	exit(code);
 }
 
-void exit_silent(t_pipex_s *px, int code)
+void	exit_silent(t_pipex_s *px, int code)
 {
 	pipex_free_close(px);
 	exit(code);

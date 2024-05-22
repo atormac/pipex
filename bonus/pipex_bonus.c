@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:04 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 20:00:28 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:26:00 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 	px->file1 = -1;
 	px->file2 = -1;
 	px->cmd_count = argc - 3;
-	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
+	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
 		px->cmd_count--;
 	px->argc = argc;
 	px->argv = argv;
@@ -31,11 +31,11 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 		exit_error(px, PX_ERR_PIDS, 0, EXIT_FAILURE);
 	if (!px->pipes)
 		exit_error(px, PX_ERR_PIPES, 0, EXIT_FAILURE);
-	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", sizeof("here_doc") - 1) == 0)
+	if (argc >= 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
 		here_doc(argv);
 }
 
-void pipex_free_close(t_pipex_s *px)
+void	pipex_free_close(t_pipex_s *px)
 {
 	if (px->file1 >= 0)
 		close(px->file1);
@@ -74,12 +74,13 @@ void	pipex_child(t_pipex_s *px, int i, int is_heredoc)
 	exit_silent(px, EXIT_SUCCESS);
 }
 
-int pipex_main(t_pipex_s *px)
+int	pipex_main(t_pipex_s *px)
 {
 	int		exit_code;
-	int		i = 0;
+	int		i;
 	int		is_heredoc;
 
+	i = 0;
 	is_heredoc = 0;
 	if (px->cmd_count < (px->argc - 3))
 		is_heredoc = 1;

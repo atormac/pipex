@@ -6,12 +6,11 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:25:55 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:26:04 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:12:25 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
 
 int	*pid_init(int argc)
 {
@@ -36,7 +35,7 @@ int	*pipes_init(int argc)
 	int	i;
 	int	cmd_count;
 	int	*pipes;
-	
+
 	i = 0;
 	cmd_count = argc - 3;
 	pipes = malloc((cmd_count - 1) * (2 * sizeof(int)));
@@ -61,14 +60,14 @@ int	*pipes_init(int argc)
 
 void	pipes_close(t_pipex_s *px, int *pipes)
 {
-	int cmd_count;
-	int i;
+	int	cmd_count;
+	int	i;
 	int	*pipefd;
 
 	i = 0;
 	cmd_count = px->argc - 3;
 	if (!pipes)
-		return;
+		return ;
 	while (i < (cmd_count - 1))
 	{
 		pipefd = pipes + (i * 2);

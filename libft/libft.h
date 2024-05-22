@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 17:37:08 by atorma            #+#    #+#             */
-/*   Updated: 2024/04/23 20:56:29 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:30:59 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,15 @@
 # include <limits.h>
 # include <stdint.h>
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 32
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 32
+# endif
 
 typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }	t_list;
-
-typedef struct t_write_state
-{
-	ssize_t	bytes_written;
-	ssize_t	ret_val;
-}	t_write_state;
 
 void	ft_write(struct t_write_state *ws, char *buf, size_t buf_size);
 void	print_char(struct t_write_state *ws, int c);

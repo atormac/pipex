@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:09 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:36:18 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:13:13 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	pipex_init(t_pipex_s *px, int argc, char **argv, char **envp)
 		exit_error(px, PX_ERR_PIPES, 0, EXIT_FAILURE);
 }
 
-void pipex_free_close(t_pipex_s *px)
+void	pipex_free_close(t_pipex_s *px)
 {
 	if (px->file1 >= 0)
 		close(px->file1);
@@ -68,11 +68,12 @@ void	pipex_child(t_pipex_s *px, int i)
 	exit_silent(px, EXIT_SUCCESS);
 }
 
-int pipex_main(t_pipex_s *px)
+int	pipex_main(t_pipex_s *px)
 {
 	int		exit_code;
-	int		i = 0;
+	int		i;
 
+	i = 0;
 	while (i < (px->argc - 3))
 	{
 		px->pids[i] = fork();

@@ -6,12 +6,12 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:39 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/21 19:27:48 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/22 14:22:39 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PIPEX_H
-# define PIPEX_H
+#ifndef PIPEX_BONUS_H
+# define PIPEX_BONUS_H
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <sys/types.h>
