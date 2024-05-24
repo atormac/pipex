@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 20:47:10 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 14:31:06 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,14 @@ int	path_exec(char *cmd, t_pipex_s *px)
 {
 	int		ret;
 	int		i;
+	char	*slash;
 
 	ret = 0;
 	i = 0;
-	if (!px->path || ft_strchr(cmd, '/'))
+	slash = ft_strchr(cmd, '/');
+	if (!px->path || slash)
 		ret = exec_cmd("", cmd, px);
-	while (px->path && px->path[i])
+	while (px->path && !slash && px->path[i])
 	{
 		ret = exec_cmd(px->path[i], cmd, px);
 		if (ret == 1 || ret == -1)
@@ -108,8 +110,12 @@ char	*path_join(char *path, char *bin)
 	if (!ret)
 		return (NULL);
 	ft_strlcpy(ret, path, path_len + 1);
-	if (ft_strchr(bin, '/') == 0)
-		ft_strlcpy(ret + path_len, "/", 2);
+	if (ft_strchr(bin, '/'))
+	{
+		ft_strlcpy(ret, bin, bin_len + 1);
+		return (ret);
+	}
+	ft_strlcpy(ret + path_len, "/", 2);
 	ft_strlcpy(ret + path_len + 1, bin, bin_len + 1);
 	return (ret);
 }
