@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:39 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/24 15:09:43 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:35:26 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ enum
 	PX_ERR_FILE,
 	PX_ERR_PERMS,
 	PX_ERR_CMD,
+	PX_ERR_DIR,
 	PX_ERR_FORK,
 	PX_ERR_DUP2,
 	PX_ERR_MALLOC,

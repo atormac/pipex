@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 19:23:21 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:36:33 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	error_output(int error, char *str)
 		ft_putstr_fd("permissions denied: ", STDERR_FILENO);
 	else if (error == PX_ERR_CMD)
 		ft_putstr_fd("command not found: ", STDERR_FILENO);
+	else if (error == PX_ERR_DIR)
+		ft_putstr_fd("is a directory: ", STDERR_FILENO);
 	else if (error == PX_ERR_FORK)
 		ft_putstr_fd("fork() error", STDERR_FILENO);
 	else if (error == PX_ERR_DUP2)
 		ft_putstr_fd("dup2() error", STDERR_FILENO);
-	else if (error == PX_ERR_PATH)
-		ft_putstr_fd("path_get() failed malloc", STDERR_FILENO);
 	else if (error == PX_ERR_PIDS)
 		ft_putstr_fd("pid_init() failed malloc", STDERR_FILENO);
 	else if (error == PX_ERR_PIPES)
