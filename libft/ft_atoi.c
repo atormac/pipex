@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdint.h>
 
 static int	is_whitespace(char c)
 {

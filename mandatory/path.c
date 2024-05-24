@@ -92,13 +92,11 @@ int	path_exec(char *cmd, t_pipex_s *px)
 
 	ret = 0;
 	i = 0;
-	slash = NULL;
-	if (cmd)
-		slash = ft_strchr(cmd, '/');
+	if (!cmd || cmd[0] == '\0')
+		exit_error(px, PX_ERR_CMD, cmd, 127);
+	slash = ft_strchr(cmd, '/');
 	if (!px->path || slash)
-	{
 		ret = exec_cmd("", cmd, px);
-	}
 	while (px->path && !slash && px->path[i])
 	{
 		ret = exec_cmd(px->path[i], cmd, px);
@@ -122,7 +120,7 @@ char	*path_join(char *path, char *bin)
 	ret = malloc(path_len + bin_len + 2);
 	if (!ret)
 		return (NULL);
-	if (bin && ft_strchr(bin, '/'))
+	if (ft_strchr(bin, '/'))
 	{
 		ft_strlcpy(ret, bin, bin_len + 1);
 		return (ret);

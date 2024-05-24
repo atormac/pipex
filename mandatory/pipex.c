@@ -48,6 +48,8 @@ void	pipex_dup(t_pipex_s *px, int fd_write, int fd_read)
 		exit_error(px, PX_ERR_DUP2, 0, EXIT_FAILURE);
 	if (dup2(fd_read, STDIN_FILENO) == -1)
 		exit_error(px, PX_ERR_DUP2, 0, EXIT_FAILURE);
+	close(fd_write);
+	close(fd_read);
 }
 
 void	pipex_child(t_pipex_s *px, int i)
