@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:39 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 20:40:21 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 15:09:43 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	**path_get(t_pipex_s *px, char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
-int		here_doc(t_pipex_s *px, char **argv);
+void	here_doc(t_pipex_s *px, char **argv);
 int		open_file1(t_pipex_s *px, int is_heredoc);
 int		open_file2(t_pipex_s *px, int is_heredoc);
 void	error_output(int error, char *str);

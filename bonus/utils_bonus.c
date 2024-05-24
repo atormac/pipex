@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:18 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 17:14:29 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 15:09:24 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,21 @@ void	free_array(char **arr)
 	free(arr);
 }
 
-int	here_doc(t_pipex_s *px, char **argv)
+void	here_doc(t_pipex_s *px, char **argv)
 {
 	int		fd;
 	char	*line;
+	int		n;
 
 	fd = open("heredoc", O_CREAT | O_WRONLY | O_EXCL | O_TRUNC, 0644);
 	if (fd == -1)
 		exit_error(px, PX_ERR_HEREDOC_FILE, 0, 1);
 	while (1)
 	{
-		write(1, "pipe heredoc>", sizeof("pipe heredoc>") - 1);
+		n = px->cmd_count - 1;
+		while (n--)
+			write(1, "pipe ", sizeof("pipe ") - 1);
+		write(1, "heredoc>", sizeof("heredoc>") - 1);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
@@ -50,7 +54,6 @@ int	here_doc(t_pipex_s *px, char **argv)
 	if (!line)
 		exit_error(px, PX_ERR_GET_NEXT_LINE, 0, 1);
 	free(line);
-	return (1);
 }
 
 int	open_file1(t_pipex_s *px, int is_heredoc)
