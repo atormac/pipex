@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/24 16:15:59 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/24 16:56:44 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,11 +23,12 @@ B_OBJECTS = $(addprefix $(BONUSDIR)/,$(B_SOURCES:.c=.o))
 LIBDIR = ./libft
 
 
-all: $(NAME)
+all: mandatory
 
-$(NAME): $(OBJECTS)
+.mandatory: $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
 	$(CC) -o $@ $(CFLAGS) $^ ./libft/libft.a
+	rm -rf .bonus
 
 $(MANDATORYDIR)/%.o: %.c
 	$(CC) -I$(MANDATORYDIR) -c $(CFLAGS) $< -o $@
@@ -39,7 +40,9 @@ $(BONUSDIR)/%.o: %.c
 	$(MAKE) -C $(LIBDIR)
 	$(CC) -o pipex $(CFLAGS) $^ ./libft/libft.a
 	touch .bonus
+	rm -rf .mandatory
 
+mandatory: .mandatory
 bonus: .bonus
 
 clean:
@@ -50,6 +53,7 @@ clean:
 fclean: clean
 	rm -f $(NAME)
 	rm -f .bonus
+	rm -rf .mandatory
 
 re: fclean all
 
