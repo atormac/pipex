@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/24 16:48:30 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 19:51:12 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,9 @@ int	path_exec(char *cmd, t_pipex_s *px)
 
 	ret = 0;
 	i = 0;
-	slash = ft_strchr(cmd, '/');
+	slash = NULL;
+	if (cmd)
+		slash = ft_strchr(cmd, '/');
 	if (!px->path || slash)
 	{
 		ret = exec_cmd("", cmd, px);
@@ -120,12 +122,12 @@ char	*path_join(char *path, char *bin)
 	ret = malloc(path_len + bin_len + 2);
 	if (!ret)
 		return (NULL);
-	ft_strlcpy(ret, path, path_len + 1);
-	if (ft_strchr(bin, '/'))
+	if (bin && ft_strchr(bin, '/'))
 	{
 		ft_strlcpy(ret, bin, bin_len + 1);
 		return (ret);
 	}
+	ft_strlcpy(ret, path, path_len + 1);
 	ft_strlcpy(ret + path_len, "/", 2);
 	ft_strlcpy(ret + path_len + 1, bin, bin_len + 1);
 	return (ret);
