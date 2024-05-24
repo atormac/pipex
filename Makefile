@@ -6,7 +6,7 @@
 #    By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/05 17:55:45 by atorma            #+#    #+#              #
-#    Updated: 2024/05/24 16:56:44 by atorma           ###   ########.fr        #
+#    Updated: 2024/05/24 17:12:35 by atorma           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ all: mandatory
 
 .mandatory: $(OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o $@ $(CFLAGS) $^ ./libft/libft.a
+	$(CC) -o $(NAME) $(CFLAGS) $^ ./libft/libft.a
 	rm -rf .bonus
 
 $(MANDATORYDIR)/%.o: %.c
@@ -38,7 +38,7 @@ $(BONUSDIR)/%.o: %.c
 
 .bonus: $(B_OBJECTS)
 	$(MAKE) -C $(LIBDIR)
-	$(CC) -o pipex $(CFLAGS) $^ ./libft/libft.a
+	$(CC) -o $(NAME) $(CFLAGS) $^ ./libft/libft.a
 	touch .bonus
 	rm -rf .mandatory
 
