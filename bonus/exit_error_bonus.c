@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:22 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/24 16:36:33 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:46:11 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	error_output(int error, char *str)
 	else if (error == PX_ERR_CMD)
 		ft_putstr_fd("command not found: ", STDERR_FILENO);
 	else if (error == PX_ERR_DIR)
-		ft_putstr_fd("is a directory: ", STDERR_FILENO);
+		ft_putstr_fd("not a directory: ", STDERR_FILENO);
 	else if (error == PX_ERR_FORK)
 		ft_putstr_fd("fork() error", STDERR_FILENO);
 	else if (error == PX_ERR_DUP2)

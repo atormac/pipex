@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/18 18:37:21 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 19:23:08 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:47:28 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void	error_output(int error, char *str)
 		ft_putstr_fd("permissions denied: ", STDERR_FILENO);
 	else if (error == PX_ERR_CMD)
 		ft_putstr_fd("command not found: ", STDERR_FILENO);
+	else if (error == PX_ERR_DIR)
+		ft_putstr_fd("not a directory: ", STDERR_FILENO);
 	else if (error == PX_ERR_FORK)
 		ft_putstr_fd("fork() error", STDERR_FILENO);
 	else if (error == PX_ERR_DUP2)

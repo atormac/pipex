@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/24 16:39:36 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/24 16:46:32 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	path_error(int ret, char *cmd, t_pipex_s *px)
 		{
 			len = ft_strlen(cmd);
 			if (len && cmd[len - 1] == '/')
-				exit_error(px, PX_ERR_FILE, cmd, 127);
+				exit_error(px, PX_ERR_DIR, cmd, 127);
 		}
 		exit_error(px, PX_ERR_CMD, cmd, 127);
 	}
