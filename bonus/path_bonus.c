@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:26:46 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/26 16:34:14 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/26 17:04:40 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	path_exec(char *cmd, t_pipex_s *px)
 	i = 0;
 	if (!cmd || cmd[0] == '\0')
 		exit_error(px, PX_ERR_PERMS, cmd, 127);
-	slash = ft_strchr(cmd, '/');
+	slash = cmd_has_slash(cmd);
 	if (!px->path || slash)
 		ret = exec_cmd("", cmd, px);
 	while (px->path && !slash && px->path[i])

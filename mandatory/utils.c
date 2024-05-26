@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:21:25 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/22 14:15:36 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/26 17:05:17 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,21 @@ void	free_array(char **arr)
 		i++;
 	}
 	free(arr);
+}
+
+char	*cmd_has_slash(char *cmd)
+{
+	char	*sp;
+	char	*slash;
+
+	sp = ft_strchr(cmd, ' ');
+	slash = ft_strchr(cmd, '/');
+	if (sp && slash)
+	{
+		if (sp <= slash)
+			return (NULL);
+	}
+	return (slash);
 }
 
 int	open_file1(t_pipex_s *px)

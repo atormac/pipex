@@ -6,7 +6,7 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 19:27:39 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/24 16:35:26 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/26 17:04:22 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ char	**path_get(t_pipex_s *px, char **envp);
 char	*path_join(char *path, char *bin);
 int		path_exec(char *cmd, t_pipex_s *px);
 void	free_array(char **arr);
+char	*cmd_has_slash(char *cmd);
 void	here_doc(t_pipex_s *px, char **argv);
 int		open_file1(t_pipex_s *px, int is_heredoc);
 int		open_file2(t_pipex_s *px, int is_heredoc);
