@@ -6,11 +6,12 @@
 /*   By: atorma <atorma@student.hive.fi>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 14:26:31 by atorma            #+#    #+#             */
-/*   Updated: 2024/05/24 19:51:12 by atorma           ###   ########.fr       */
+/*   Updated: 2024/05/26 16:24:48 by atorma           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+#include <errno.h>
 
 char	**path_get(t_pipex_s *px, char **envp)
 {
@@ -76,7 +77,11 @@ void	path_error(int ret, char *cmd, t_pipex_s *px)
 		{
 			len = ft_strlen(cmd);
 			if (len && cmd[len - 1] == '/')
-				exit_error(px, PX_ERR_DIR, cmd, 127);
+			{
+				if (access(cmd, F_OK) != 0 && errno == ENOTDIR)
+					exit_error(px, PX_ERR_DIR, cmd, 127);
+				exit_error(px, PX_ERR_PERMS, cmd, 127);
+			}
 		}
 		exit_error(px, PX_ERR_CMD, cmd, 127);
 	}
@@ -93,7 +98,7 @@ int	path_exec(char *cmd, t_pipex_s *px)
 	ret = 0;
 	i = 0;
 	if (!cmd || cmd[0] == '\0')
-		exit_error(px, PX_ERR_CMD, cmd, 127);
+		exit_error(px, PX_ERR_PERMS, cmd, 127);
 	slash = ft_strchr(cmd, '/');
 	if (!px->path || slash)
 		ret = exec_cmd("", cmd, px);
